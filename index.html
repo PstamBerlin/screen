@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Displayschutz – Screen Protectors, cut to fit</title>
+<meta name="description" content="Displayschutzfolie für jedes Handy, hier in Berlin zugeschnitten, während du wartest. Ab 3 €. Screen protectors cut to size for every phone.">
+<link rel="icon" href="passgenau-mark.svg" type="image/svg+xml">
+<style>
+:root{
+  --page:linear-gradient(90deg,#F4EFFF 0%,#F9EFF4 50%,#FEEDE3 100%);
+  --bg:#F9EFF4; --ink:#141120; --dim:#5E5480; --accent:#7C3AED; --on:#fff; --key:#6D28D9;
+  --panel:#fff; --line:#E5E1E9; --warn:#FFF6EC;
+  --chipR-bg:#FBE1EC; --chipR:#9D174D; --chipL-bg:#E9E3FF; --chipL:#4C1D95; --chipP-bg:#FFE4D1; --chipP:#7C2D12;
+  --shadow:0 6px 24px rgba(20,17,32,.08);
+  --edge:linear-gradient(90deg,#B9A6D3,#C7A4B7,#D9A38F);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Manrope",system-ui,sans-serif;color:var(--ink);background:var(--bg);background-image:var(--page);background-attachment:fixed;line-height:1.45;font-size:17px}
+/* language switch: the page carries both, one is shown */
+html[lang=de] .en{display:none!important}
+html[lang=en] .de{display:none!important}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:5;backdrop-filter:blur(12px);background:rgba(249,239,244,.82);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:14px;padding:10px 16px}
+header svg{width:44px;height:36px;flex:none}
+.brand{font-weight:800;letter-spacing:.02em;font-size:19px}
+nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+nav a{color:var(--dim);text-decoration:none;font-weight:700;padding:7px 10px;border-radius:999px;font-size:15px}
+nav a:hover{background:var(--chipL-bg);color:var(--chipL)}
+.lang{display:flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;margin-left:8px}
+.lang button{border:0;background:transparent;font:inherit;font-weight:800;padding:6px 12px;cursor:pointer;color:var(--dim)}
+.lang button.on{background:var(--accent);color:var(--on)}
+.hero{padding:56px 0 28px;text-align:center}
+.hero svg{width:130px;height:106px}
+h1{font-size:clamp(38px,7vw,64px);margin:10px 0 6px;letter-spacing:.01em;line-height:1.05}
+.tag{font-size:clamp(20px,3.4vw,28px);font-weight:800;margin:0 0 18px}
+.chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.chip{display:inline-block;padding:6px 14px;border-radius:999px;font-weight:800;background:var(--chipL-bg);color:var(--chipL)}
+.chip.v{background:#DCF5E3;color:#14532D}.chip.r{background:var(--chipR-bg);color:var(--chipR)}.chip.p{background:var(--chipP-bg);color:var(--chipP)}
+section{padding:26px 0}
+.board{background:var(--panel);border:1.5px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:26px 26px 22px;position:relative;overflow:hidden}
+.board::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--edge)}
+h2{font-size:clamp(28px,4.5vw,40px);margin:0 0 16px;line-height:1.1}
+h2 .pill{display:inline-block;background:var(--chipL-bg);color:var(--key);padding:2px 16px;border-radius:999px}
+h3{font-size:20px;margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid var(--ink)}
+p{margin:0 0 10px}
+b,strong{color:var(--key)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.col{background:#FBF8FD;border:1.5px solid var(--line);border-radius:18px;padding:16px 18px}
+.col.warn{background:var(--warn)}
+.prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:12px 0}
+.price{display:flex;align-items:center;gap:14px;background:#FBF8FD;border:1.5px solid var(--line);border-radius:18px;padding:14px 16px}
+.price .amt{font-size:34px;font-weight:800;color:var(--accent);min-width:74px}
+.price .n{font-weight:800;font-size:19px}.price .d{color:var(--dim);font-weight:700;font-size:15px}
+.extras{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.extra{background:var(--chipL-bg);color:var(--chipL);border-radius:999px;padding:6px 14px;font-weight:800}
+.vs{font-size:20px;font-weight:800;margin-top:14px}
+.steps{display:grid;gap:12px;margin-top:8px}
+.step{display:flex;align-items:center;gap:16px;background:#FBF8FD;border:1.5px solid var(--line);border-radius:18px;padding:12px 16px}
+.num{flex:none;width:52px;height:52px;border-radius:999px;background:var(--accent);color:var(--on);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800}
+.step .t{font-size:21px;font-weight:800;line-height:1.15}
+.step small{display:block;font-size:15px;color:var(--dim);font-weight:700;margin-top:3px}
+.next{display:grid;grid-template-columns:1fr;gap:12px}
+.date{display:flex;gap:16px;align-items:center;background:#FBF8FD;border:1.5px solid var(--line);border-radius:18px;padding:14px 18px}
+.date .day{flex:none;text-align:center;background:var(--accent);color:var(--on);border-radius:14px;padding:8px 12px;min-width:84px;line-height:1.05}
+.date .day b{display:block;color:var(--on);font-size:30px}
+.date .day span{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.date .where{font-size:20px;font-weight:800}.date .meta{color:var(--dim);font-weight:700}
+.soon{background:var(--warn);border:1.5px dashed #D9A38F;border-radius:18px;padding:16px 18px;font-weight:700}
+.btn{display:inline-block;background:var(--accent);color:var(--on);text-decoration:none;font-weight:800;padding:12px 22px;border-radius:999px;font-size:18px;margin-top:6px}
+.btn.ghost{background:var(--chipL-bg);color:var(--chipL)}
+.faq details{border:1.5px solid var(--line);border-radius:16px;padding:10px 16px;margin-bottom:8px;background:#FBF8FD}
+.faq summary{font-weight:800;font-size:18px;cursor:pointer}
+.faq details p{margin:8px 0 2px}
+footer{padding:26px 0 40px;color:var(--dim);font-weight:700;text-align:center;font-size:15px}
+footer a{color:var(--key)}
+@media (max-width:600px){.board{padding:20px 16px 16px;border-radius:22px}header nav{display:none}.hero{padding:34px 0 20px}}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <svg viewBox="0 0 208 168" aria-hidden="true"><path fill="#BFE3C6" fill-rule="evenodd" d="M12 26 H132 V152 H12 Z M44 44 h52 a11 11 0 0 1 11 11 v56 a11 11 0 0 1 -11 11 h-52 a11 11 0 0 1 -11 -11 v-56 a11 11 0 0 1 11 -11 z"/><rect x="12" y="26" width="120" height="126" fill="none" stroke="#111" stroke-width="9" stroke-linejoin="round"/><rect x="33" y="44" width="52" height="78" rx="11" fill="none" stroke="#111" stroke-width="9"/><g transform="rotate(13 152 78)"><rect x="126" y="39" width="52" height="78" rx="11" fill="#5BB8D9" stroke="#111" stroke-width="9"/></g></svg>
+  <span class="brand"><span class="de">Displayschutz</span><span class="en">Screen Protectors</span></span>
+  <nav>
+    <a href="#termine"><span class="de">Termine</span><span class="en">Dates</span></a>
+    <a href="#preise"><span class="de">Preise</span><span class="en">Prices</span></a>
+    <a href="#folien"><span class="de">Folien</span><span class="en">Films</span></a>
+    <a href="#so"><span class="de">So geht’s</span><span class="en">How it works</span></a>
+    <a href="#fragen"><span class="de">Fragen</span><span class="en">Questions</span></a>
+    <a href="#kontakt"><span class="de">Kontakt</span><span class="en">Contact</span></a>
+  </nav>
+  <div class="lang" role="group" aria-label="Sprache / Language"><button type="button" data-lang="de" class="on">DE</button><button type="button" data-lang="en">EN</button></div>
+</div></header>
+
+<div class="wrap">
+
+<div class="hero">
+  <svg viewBox="0 0 208 168" aria-hidden="true"><path fill="#BFE3C6" fill-rule="evenodd" d="M12 26 H132 V152 H12 Z M44 44 h52 a11 11 0 0 1 11 11 v56 a11 11 0 0 1 -11 11 h-52 a11 11 0 0 1 -11 -11 v-56 a11 11 0 0 1 11 -11 z"/><rect x="12" y="26" width="120" height="126" fill="none" stroke="#111" stroke-width="9" stroke-linejoin="round"/><rect x="33" y="44" width="52" height="78" rx="11" fill="none" stroke="#111" stroke-width="9"/><g transform="rotate(13 152 78)"><rect x="126" y="39" width="52" height="78" rx="11" fill="#5BB8D9" stroke="#111" stroke-width="9"/></g></svg>
+  <h1 class="de">Displayschutz</h1><h1 class="en">Screen Protectors</h1>
+  <p class="tag de">Für <span class="chip v">jedes</span> Handy – hier zugeschnitten</p>
+  <p class="tag en">For <span class="chip v">every</span> phone – cut to size right here</p>
+  <div class="chips">
+    <span class="chip de">Auch für Handys, die es nirgendwo gibt</span><span class="chip en">Even for phones no shop has film for</span>
+    <span class="chip p de">Im Laden ab 20 € – bei mir ab 3 €</span><span class="chip p en">In shops from €20 – here from €3</span>
+    <span class="chip de">Fertig, während du wartest</span><span class="chip en">Done while you wait</span>
+  </div>
+</div>
+
+<section id="termine"><div class="board">
+  <h2><span class="pill"><span class="de">Nächster Verkauf</span><span class="en">Next market</span></span></h2>
+  <div class="next" id="nextlist"></div>
+  <p class="de" style="margin-top:14px">Meistens findest du mich auf dem Markt am Rathaus oder abends bei Veranstaltungen, zu denen ich eingeladen bin. Neue Termine stehen hier, sobald sie feststehen.</p>
+  <p class="en" style="margin-top:14px">You’ll usually find me at the market by the Rathaus or at evening events I’m invited to. New dates show up here as soon as they’re fixed.</p>
+</div></section>
+
+<section id="preise"><div class="board">
+  <h2><span class="de">Preise</span><span class="en">Prices</span></h2>
+  <div class="prices">
+    <div class="price"><div class="amt">5 €</div><div><div class="n de">Klar</div><div class="n en">Clear</div><div class="d">9H · EPU</div></div></div>
+    <div class="price"><div class="amt">7 €</div><div><div class="n de">Matt</div><div class="n en">Matte</div><div class="d de">kein Glanz, keine Fingerabdrücke</div><div class="d en">no glare, no fingerprints</div></div></div>
+    <div class="price"><div class="amt">7 €</div><div><div class="n">Red Light</div><div class="d de">wärmerer Ton</div><div class="d en">warmer tone</div></div></div>
+    <div class="price"><div class="amt">8 €</div><div><div class="n">Privacy</div><div class="d de">seitlich schwarz</div><div class="d en">black from the side</div></div></div>
+    <div class="price"><div class="amt">10 €</div><div><div class="n">Tablet</div><div class="d de">große Folie</div><div class="d en">big sheet</div></div></div>
+  </div>
+  <div class="extras">
+    <span class="extra de">−2 € · dünnere Folie (TPU)</span><span class="extra en">−€2 · thinner film (TPU)</span>
+    <span class="extra de">+3 € · Rückseite dazu</span><span class="extra en">+€3 · back side too</span>
+  </div>
+  <p class="vs de">Im Laden <span class="chip r">ab 20 €</span> – bei mir <span class="chip v">ab 3 €</span></p>
+  <p class="vs en">In shops <span class="chip r">from €20</span> – here <span class="chip v">from €3</span></p>
+  <p class="de" style="color:var(--dim);font-weight:700">Mikrofasertuch gibt’s dazu.</p>
+  <p class="en" style="color:var(--dim);font-weight:700">Microfibre cloth included.</p>
+</div></section>
+
+<section id="folien"><div class="board">
+  <h2><span class="de">Welche Folie ist welche?</span><span class="en">Which film is which?</span></h2>
+  <div class="cols">
+    <div class="col">
+      <h3 class="de">Die Sorten</h3><h3 class="en">The types</h3>
+      <div class="de"><p><b>Klar</b> – ganz normal, unsichtbar.</p><p><b>Matt</b> – keine Spiegelung, keine Fingerabdrücke. Draußen viel besser.</p><p><b>Privacy</b> – von der Seite sieht man nichts.</p><p><b>Red Light</b> – wärmerer Ton, vor allem abends. Geschmackssache.</p></div>
+      <div class="en"><p><b>Clear</b> – the normal one, invisible.</p><p><b>Matte</b> – no glare, no fingerprints. Much better outdoors.</p><p><b>Privacy</b> – from the side you see nothing.</p><p><b>Red Light</b> – warmer tone, mostly for evenings. A matter of taste.</p></div>
+    </div>
+    <div class="col">
+      <h3 class="de">9H oder dünn?</h3><h3 class="en">9H or thin?</h3>
+      <div class="de"><p><b>9H / EPU</b> – dicker, besser, heilt kleine Kratzer selbst.</p><p><b>TPU</b> – dünner, nicht so gut, <b>2 € billiger</b>.</p><p>Beide werden genau für dein Modell geschnitten.</p><p>Ich sag dir ehrlich, welche du nehmen sollst.</p></div>
+      <div class="en"><p><b>9H / EPU</b> – thicker, better, heals small scratches by itself.</p><p><b>TPU</b> – thinner, not as good, <b>€2 cheaper</b>.</p><p>Both are cut exactly for your model.</p><p>I’ll tell you honestly which one to take.</p></div>
+    </div>
+    <div class="col warn">
+      <h3 class="de">Ehrlich gesagt</h3><h3 class="en">Honestly</h3>
+      <div class="de"><p>Matt hat feine Glitzerpunkte. Dafür keine Spiegelung.</p><p><b>Red Light</b> wird als Haut- und Schlaf-Folie verkauft. Ehrlich: es macht den Bildschirm wärmer. Mehr verspreche ich nicht.</p><p><b>9H</b> klingt nach Diamant-Skala, ist aber die <b>Bleistift-Skala</b>. Saphir wäre Mohs 9 – das hier ist Folie.</p><p>Was wirklich kratzt, ist <b>Sand</b>. Schlüssel kratzen Glas gar nicht.</p><p>Kleine Blasen? Weg nach 1–2 Tagen.</p></div>
+      <div class="en"><p>Matte has tiny glitter dots. In return: no glare.</p><p><b>Red Light</b> is sold as a skin-and-sleep film. Honestly: it makes the screen warmer. I don’t promise more than that.</p><p><b>9H</b> sounds like the diamond scale, but it’s the <b>pencil scale</b>. Sapphire would be Mohs 9 – this is film.</p><p>What really scratches is <b>sand</b>. Keys don’t scratch glass at all.</p><p>Small bubbles? Gone in 1–2 days.</p></div>
+    </div>
+    <div class="col">
+      <h3 class="de">Und außerdem</h3><h3 class="en">And also</h3>
+      <div class="de"><p>Auch für <b>Thermomix</b>, Tablet, Smartwatch – frag mich!</p><p><b>Rückseite</b> auch möglich (+3 €). Mit Hülle lohnt sich das nicht.</p><p>Falsch geschnitten? Sofort neu, kostenlos.</p><p>Mikrofasertuch gibt’s dazu.</p><p>Handy bleibt auf dem Tisch – du legst es hin, du nimmst es wieder.</p></div>
+      <div class="en"><p>Also for <b>Thermomix</b>, tablets, smartwatches – just ask!</p><p><b>Back side</b> possible too (+€3). With a case it’s not worth it.</p><p>Cut wrong? New one right away, free.</p><p>Microfibre cloth included.</p><p>Your phone stays on the table – you put it down, you pick it up.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="so"><div class="board">
+  <h2><span class="pill"><span class="de">So geht’s</span><span class="en">How it works</span></span></h2>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><div class="t"><span class="de">Zeig mir dein Handy.</span><span class="en">Show me your phone.</span></div></div>
+    <div class="step"><div class="num">2</div><div class="t"><span class="de">Sag mir die <b>Modellnummer</b>.<small>Einstellungen → Über das Telefon → Modellnummer</small></span><span class="en">Tell me the <b>model number</b>.<small>Settings → About phone → Model number</small></span></div></div>
+    <div class="step"><div class="num">3</div><div class="t"><span class="de">Ich schneide die Folie sofort zu.</span><span class="en">I cut the film right away.</span></div></div>
+  </div>
+  <p class="de" style="margin-top:14px">Warum die Modellnummer? Viele Handys gibt es als 4G- und 5G-Version mit fast gleichem Namen, aber anderem Display. Die Nummer ist eindeutig, der Name nicht. Du kannst sie vorher schon raussuchen:</p>
+  <p class="en" style="margin-top:14px">Why the model number? Lots of phones come as a 4G and a 5G version with almost the same name but a different screen. The number is exact, the name isn’t. You can look yours up before you come:</p>
+  <a class="btn ghost" href="handy-finder.html"><span class="de">Handy-Finder öffnen</span><span class="en">Open the phone finder</span></a>
+  <p style="margin-top:10px;color:var(--dim);font-weight:700"><span class="de">Falsch geschnitten? Sofort neu, kostenlos.</span><span class="en">Cut wrong? New one right away, free.</span></p>
+</div></section>
+
+<section id="ueber"><div class="board">
+  <h2><span class="de">Wer schneidet hier?</span><span class="en">Who’s cutting?</span></h2>
+  <div class="de"><p>Ich bin Peter, 11, aus Berlin. Die Schneidemaschine habe ich auf der IFA 2026 bekommen, direkt vom Stand des Herstellers. Sie schneidet aus einem Bogen Folie genau die Form für dein Display – deshalb passt sie auch bei Handys, für die kein Laden eine Folie hat.</p><p>Ich verkaufe keine Wunder. Was eine Folie kann und was nicht, steht oben – und das sage ich dir am Stand genauso.</p></div>
+  <div class="en"><p>I’m Peter, 11, from Berlin. I got the cutting machine at IFA 2026, straight from the maker’s stand. It cuts the exact shape of your screen out of a sheet of film – which is why it works even for phones no shop has a protector for.</p><p>I don’t sell miracles. What a film can and can’t do is written above – and I’ll tell you the same at the stand.</p></div>
+</div></section>
+
+<section id="fragen"><div class="board faq">
+  <h2><span class="de">Fragen</span><span class="en">Questions</span></h2>
+  <details><summary><span class="de">Passt das wirklich für jedes Handy?</span><span class="en">Does it really fit every phone?</span></summary><p class="de">Ja. Die Maschine schneidet nach Modell, nicht nach Lagerbestand. Auch alte, seltene oder in Deutschland nie verkaufte Handys. Du brauchst nur die Modellnummer.</p><p class="en">Yes. The machine cuts by model, not by what’s in stock. Old, rare or never-sold-in-Germany phones too. All you need is the model number.</p></details>
+  <details><summary><span class="de">Wie lange dauert es?</span><span class="en">How long does it take?</span></summary><p class="de">Ein paar Minuten: schneiden, Display reinigen, aufkleben – und du gehst mit fertiger Folie weiter.</p><p class="en">A few minutes: cut, clean the screen, stick it on – and you walk off with the film already on.</p></details>
+  <details><summary><span class="de">Klebst du die Folie auch auf?</span><span class="en">Do you put the film on too?</span></summary><p class="de">Ja, am Stand. Dein Handy bleibt dabei auf dem Tisch – du legst es hin und nimmst es selbst wieder.</p><p class="en">Yes, at the stand. Your phone stays on the table – you put it down and pick it up yourself.</p></details>
+  <details><summary><span class="de">Tablet, Switch, Smartwatch, Thermomix?</span><span class="en">Tablet, Switch, smartwatch, Thermomix?</span></summary><p class="de">Geht alles. Große Displays brauchen den großen Bogen (10 €). Einfach fragen.</p><p class="en">All possible. Big screens need the big sheet (€10). Just ask.</p></details>
+  <details><summary><span class="de">Was ist, wenn die Folie nicht passt?</span><span class="en">What if the film doesn’t fit?</span></summary><p class="de">Falsch geschnitten? Sofort neu, kostenlos. Kleine Blasen verschwinden von selbst nach 1–2 Tagen.</p><p class="en">Cut wrong? New one right away, free. Small bubbles disappear by themselves in 1–2 days.</p></details>
+  <details><summary><span class="de">Kann ich vorbestellen?</span><span class="en">Can I order ahead?</span></summary><p class="de">Komm einfach zum nächsten Termin, dann schneide ich sie vor dir. Die Termine stehen oben.</p><p class="en">Just come to the next date and I’ll cut it in front of you. The dates are at the top.</p></details>
+</div></section>
+
+<section id="kontakt"><div class="board">
+  <h2><span class="de">Kontakt</span><span class="en">Contact</span></h2>
+  <p class="de">Frage zu deinem Handy, einem Termin oder einer Bestellung für mehrere Leute? Schreib mir:</p>
+  <p class="en">A question about your phone, a date, or an order for several people? Write to me:</p>
+  <a class="btn" href="mailto:stam.peter2015@gmail.com">stam.peter2015@gmail.com</a>
+</div></section>
+
+</div>
+
+<footer><div class="wrap">
+  <p><span class="de">Displayschutz · Berlin · Preise können sich ändern.</span><span class="en">Screen Protectors · Berlin · Prices may change.</span></p>
+</div></footer>
+
+<script src="termine.js"></script>
+<script>
+(function () {
+  var html = document.documentElement;
+  function setLang(l) {
+    html.lang = l;
+    document.querySelectorAll('.lang button').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === l); });
+    try { localStorage.setItem('passgenau.lang', l); } catch (e) {}
+    renderDates();
+  }
+  document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
+  var saved = null; try { saved = localStorage.getItem('passgenau.lang'); } catch (e) {}
+  if (saved !== 'de' && saved !== 'en') saved = /^en/i.test(navigator.language || '') ? 'en' : 'de';
+
+  var MON = { de: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+              en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] };
+  var DAY = { de: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function renderDates() {
+    var l = html.lang, box = document.getElementById('nextlist');
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var list = (window.TERMINE || []).filter(function (t) { return new Date(t.date + 'T12:00:00') >= today; })
+      .sort(function (a, b) { return a.date < b.date ? -1 : 1; }).slice(0, 4);
+    if (!list.length) {
+      box.innerHTML = '<div class="soon">' + (l === 'de'
+        ? 'Der nächste Termin steht noch nicht fest. Schau bald wieder vorbei – sobald er feststeht, steht er hier.'
+        : 'The next date isn’t fixed yet. Check back soon – as soon as it is, it’ll be here.') + '</div>';
+      return;
+    }
+    box.innerHTML = list.map(function (t) {
+      var d = new Date(t.date + 'T12:00:00');
+      return '<div class="date"><div class="day"><span>' + DAY[l][d.getDay()] + '</span><b>' + d.getDate() + '</b><span>' + MON[l][d.getMonth()] + '</span></div>' +
+        '<div><div class="where">' + esc(t.place) + '</div><div class="meta">' + esc([t.time, t.address].filter(Boolean).join(' · ')) + '</div>' +
+        (t.note ? '<div class="meta">' + esc(t.note) + '</div>' : '') + '</div></div>';
+    }).join('');
+  }
+  setLang(saved);
+})();
+</script>
+</body>
+</html>
