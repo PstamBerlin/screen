@@ -5,86 +5,155 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Displayschutz – Screen Protectors, cut to fit</title>
 <meta name="description" content="Displayschutzfolie für jedes Handy, hier in Berlin zugeschnitten, während du wartest. Ab 3 €. Screen protectors cut to size for every phone.">
+<meta name="theme-color" content="#F9EFF4">
+<meta property="og:title" content="Displayschutz – für jedes Handy, hier zugeschnitten">
+<meta property="og:description" content="Ab 3 €. Im Laden ab 20 €. Zugeschnitten, während du wartest – auch für Handys, die es nirgendwo gibt.">
+<meta property="og:type" content="website">
 <link rel="icon" href="passgenau-mark.svg" type="image/svg+xml">
 <style>
 :root{
-  --page:linear-gradient(90deg,#F4EFFF 0%,#F9EFF4 50%,#FEEDE3 100%);
-  --bg:#F9EFF4; --ink:#141120; --dim:#5E5480; --accent:#7C3AED; --on:#fff; --key:#6D28D9;
-  --panel:#fff; --line:#E5E1E9; --warn:#FFF6EC;
+  --bg:#F9EFF4; --ink:#141120; --dim:#5E5480; --accent:#7C3AED; --accent2:#9F67FF; --on:#fff; --key:#6D28D9;
+  --panel:#fff; --line:#E5E1E9; --warn:#FFF6EC; --soft:#FBF8FD;
   --chipR-bg:#FBE1EC; --chipR:#9D174D; --chipL-bg:#E9E3FF; --chipL:#4C1D95; --chipP-bg:#FFE4D1; --chipP:#7C2D12;
-  --shadow:0 6px 24px rgba(20,17,32,.08);
-  --edge:linear-gradient(90deg,#B9A6D3,#C7A4B7,#D9A38F);
+  --shadow:0 6px 24px rgba(20,17,32,.08); --shadow-up:0 16px 40px rgba(124,58,237,.16);
+  --edge:linear-gradient(90deg,#B9A6D3,#C7A4B7,#D9A38F,#B9A6D3);
+  --ease:cubic-bezier(.2,.7,.2,1); --spring:cubic-bezier(.34,1.56,.64,1);
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 html,body{margin:0}
-body{font-family:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Manrope",system-ui,sans-serif;color:var(--ink);background:var(--bg);background-image:var(--page);background-attachment:fixed;line-height:1.45;font-size:17px}
+body{font-family:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Manrope",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.45;font-size:17px;overflow-x:hidden}
+/* the aurora: three soft blobs that drift very slowly behind everything */
+.sky{position:fixed;inset:0;z-index:-1;background:linear-gradient(90deg,#F4EFFF 0%,#F9EFF4 50%,#FEEDE3 100%);overflow:hidden}
+.sky i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;will-change:transform}
+.sky i:nth-child(1){width:60vw;height:60vw;left:-15vw;top:-20vw;background:#D9C7FF;animation:drift1 26s ease-in-out infinite alternate}
+.sky i:nth-child(2){width:50vw;height:50vw;right:-12vw;top:10vh;background:#FFD6E5;animation:drift2 31s ease-in-out infinite alternate}
+.sky i:nth-child(3){width:55vw;height:55vw;left:25vw;bottom:-30vw;background:#FFE1C8;animation:drift3 37s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(12vw,10vh) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-10vw,18vh) scale(.9)}}
+@keyframes drift3{to{transform:translate(-14vw,-12vh) scale(1.1)}}
 /* language switch: the page carries both, one is shown */
 html[lang=de] .en{display:none!important}
 html[lang=en] .de{display:none!important}
 .wrap{max-width:1040px;margin:0 auto;padding:0 16px}
-header{position:sticky;top:0;z-index:5;backdrop-filter:blur(12px);background:rgba(249,239,244,.82);border-bottom:1px solid var(--line)}
-header .wrap{display:flex;align-items:center;gap:14px;padding:10px 16px}
+section{scroll-margin-top:76px}
+header{position:sticky;top:0;z-index:5;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(249,239,244,.8);border-bottom:1px solid var(--line);transition:box-shadow .3s var(--ease)}
+header.scrolled{box-shadow:0 6px 24px rgba(20,17,32,.08)}
+header .wrap{display:flex;align-items:center;gap:12px;padding:10px 16px;position:relative}
 header svg{width:44px;height:36px;flex:none}
 .brand{font-weight:800;letter-spacing:.02em;font-size:19px}
-nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
-nav a{color:var(--dim);text-decoration:none;font-weight:700;padding:7px 10px;border-radius:999px;font-size:15px}
-nav a:hover{background:var(--chipL-bg);color:var(--chipL)}
-.lang{display:flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;margin-left:8px}
-.lang button{border:0;background:transparent;font:inherit;font-weight:800;padding:6px 12px;cursor:pointer;color:var(--dim)}
-.lang button.on{background:var(--accent);color:var(--on)}
+nav{margin-left:auto;display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end}
+nav a{position:relative;color:var(--dim);text-decoration:none;font-weight:700;padding:7px 10px;border-radius:999px;font-size:15px;transition:color .2s,background .2s}
+nav a:hover,nav a.on{background:var(--chipL-bg);color:var(--chipL)}
+.lang{display:flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;margin-left:6px;position:relative;isolation:isolate}
+.lang button{border:0;background:transparent;font:inherit;font-weight:800;padding:6px 12px;cursor:pointer;color:var(--dim);position:relative;z-index:1;transition:color .25s}
+.lang button.on{color:var(--on)}
+.lang::after{content:"";position:absolute;top:0;bottom:0;left:0;width:50%;background:var(--accent);border-radius:999px;transition:transform .35s var(--spring)}
+html[lang=en] .lang::after{transform:translateX(100%)}
+.burger{display:none;margin-left:auto;border:2px solid var(--line);background:var(--panel);border-radius:12px;width:42px;height:38px;cursor:pointer;padding:0;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.burger i{display:block;width:18px;height:2.5px;background:var(--ink);border-radius:2px;transition:transform .3s var(--ease),opacity .2s}
+.burger.open i:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.burger.open i:nth-child(2){opacity:0}
+.burger.open i:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
 .hero{padding:56px 0 28px;text-align:center}
-.hero svg{width:130px;height:106px}
+.hero .mark{width:150px;height:122px;overflow:visible}
+.hero .mark .piece{transform-box:fill-box;transform-origin:center;animation:lift 4.5s var(--ease) infinite}
+@keyframes lift{0%,12%{transform:translate(-22px,2px) rotate(-13deg)}45%,70%{transform:translate(0,0) rotate(0)}88%,100%{transform:translate(-22px,2px) rotate(-13deg)}}
 h1{font-size:clamp(38px,7vw,64px);margin:10px 0 6px;letter-spacing:.01em;line-height:1.05}
 .tag{font-size:clamp(20px,3.4vw,28px);font-weight:800;margin:0 0 18px}
 .chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .chip{display:inline-block;padding:6px 14px;border-radius:999px;font-weight:800;background:var(--chipL-bg);color:var(--chipL)}
+a.chip{text-decoration:none;transition:transform .25s var(--spring),box-shadow .25s}
+a.chip:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 8px 20px rgba(124,58,237,.18)}
 .chip.v{background:#DCF5E3;color:#14532D}.chip.r{background:var(--chipR-bg);color:var(--chipR)}.chip.p{background:var(--chipP-bg);color:var(--chipP)}
+/* entrance animations: things rise in as they appear */
+.rise{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rise.in{opacity:1;transform:none}
+.hero .rise{transition-delay:var(--d,0s)}
+.stagger>*{opacity:0;transform:translateY(18px) scale(.98);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.stagger.in>*{opacity:1;transform:none}
+.stagger.in>*:nth-child(1){transition-delay:.05s}.stagger.in>*:nth-child(2){transition-delay:.13s}.stagger.in>*:nth-child(3){transition-delay:.21s}.stagger.in>*:nth-child(4){transition-delay:.29s}.stagger.in>*:nth-child(5){transition-delay:.37s}.stagger.in>*:nth-child(6){transition-delay:.45s}
 section{padding:26px 0}
 .board{background:var(--panel);border:1.5px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:26px 26px 22px;position:relative;overflow:hidden}
-.board::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--edge)}
+.board::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--edge);background-size:300% 100%;animation:edge 9s linear infinite}
+@keyframes edge{to{background-position:300% 0}}
 h2{font-size:clamp(28px,4.5vw,40px);margin:0 0 16px;line-height:1.1}
 h2 .pill{display:inline-block;background:var(--chipL-bg);color:var(--key);padding:2px 16px;border-radius:999px}
 h3{font-size:20px;margin:0 0 8px;padding-bottom:6px;border-bottom:3px solid var(--ink)}
 p{margin:0 0 10px}
 b,strong{color:var(--key)}
 .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-.col{background:#FBF8FD;border:1.5px solid var(--line);border-radius:18px;padding:16px 18px}
+.col{background:var(--soft);border:1.5px solid var(--line);border-radius:18px;padding:16px 18px;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.col:hover{transform:translateY(-4px);box-shadow:var(--shadow-up)}
 .col.warn{background:var(--warn)}
 .prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin:12px 0}
-.price{display:flex;align-items:center;gap:14px;background:#FBF8FD;border:1.5px solid var(--line);border-radius:18px;padding:14px 16px}
+.price{display:flex;align-items:center;gap:14px;background:var(--soft);border:1.5px solid var(--line);border-radius:18px;padding:14px 16px;transition:transform .3s var(--spring),box-shadow .3s var(--ease),border-color .3s}
+.price:hover{transform:translateY(-5px) scale(1.02);box-shadow:var(--shadow-up);border-color:#CDB8FF}
 .price .amt{font-size:34px;font-weight:800;color:var(--accent);min-width:74px}
 .price .n{font-weight:800;font-size:19px}.price .d{color:var(--dim);font-weight:700;font-size:15px}
 .extras{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .extra{background:var(--chipL-bg);color:var(--chipL);border-radius:999px;padding:6px 14px;font-weight:800}
 .vs{font-size:20px;font-weight:800;margin-top:14px}
 .steps{display:grid;gap:12px;margin-top:8px}
-.step{display:flex;align-items:center;gap:16px;background:#FBF8FD;border:1.5px solid var(--line);border-radius:18px;padding:12px 16px}
+.step{display:flex;align-items:center;gap:16px;background:var(--soft);border:1.5px solid var(--line);border-radius:18px;padding:12px 16px;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.step:hover{transform:translateX(6px);box-shadow:var(--shadow-up)}
 .num{flex:none;width:52px;height:52px;border-radius:999px;background:var(--accent);color:var(--on);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800}
+.in .num{animation:pop .6s var(--spring) both}
+.in .step:nth-child(2) .num{animation-delay:.15s}.in .step:nth-child(3) .num{animation-delay:.3s}
+@keyframes pop{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
 .step .t{font-size:21px;font-weight:800;line-height:1.15}
 .step small{display:block;font-size:15px;color:var(--dim);font-weight:700;margin-top:3px}
 .next{display:grid;grid-template-columns:1fr;gap:12px}
-.date{display:flex;gap:16px;align-items:center;background:#FBF8FD;border:1.5px solid var(--line);border-radius:18px;padding:14px 18px}
+.date{display:flex;gap:16px;align-items:center;background:var(--soft);border:1.5px solid var(--line);border-radius:18px;padding:14px 18px;animation:pop .5s var(--spring) both;transition:transform .3s var(--ease),box-shadow .3s}
+.date:hover{transform:translateY(-3px);box-shadow:var(--shadow-up)}
 .date .day{flex:none;text-align:center;background:var(--accent);color:var(--on);border-radius:14px;padding:8px 12px;min-width:84px;line-height:1.05}
 .date .day b{display:block;color:var(--on);font-size:30px}
 .date .day span{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
 .date .where{font-size:20px;font-weight:800}.date .meta{color:var(--dim);font-weight:700}
 .soon{background:var(--warn);border:1.5px dashed #D9A38F;border-radius:18px;padding:16px 18px;font-weight:700}
-.btn{display:inline-block;background:var(--accent);color:var(--on);text-decoration:none;font-weight:800;padding:12px 22px;border-radius:999px;font-size:18px;margin-top:6px}
+.btn{display:inline-block;background:var(--accent);color:var(--on);text-decoration:none;font:inherit;font-weight:800;padding:12px 22px;border:0;border-radius:999px;font-size:18px;margin-top:6px;position:relative;overflow:hidden;cursor:pointer;transition:transform .25s var(--spring),box-shadow .25s,background .25s;will-change:transform}
+.btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 28px rgba(124,58,237,.3);background:var(--accent2)}
+.btn:active{transform:scale(.97)}
 .btn.ghost{background:var(--chipL-bg);color:var(--chipL)}
-.faq details{border:1.5px solid var(--line);border-radius:16px;padding:10px 16px;margin-bottom:8px;background:#FBF8FD}
-.faq summary{font-weight:800;font-size:18px;cursor:pointer}
+.btn.ghost:hover{background:#DDD3FF}
+.btn .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:ripple .6s var(--ease) forwards;pointer-events:none}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+.copied{display:inline-block;margin-left:10px;color:var(--key);font-weight:800;opacity:0;transition:opacity .3s}
+.copied.show{opacity:1}
+.faq details{border:1.5px solid var(--line);border-radius:16px;padding:10px 16px;margin-bottom:8px;background:var(--soft);transition:background .25s,box-shadow .25s}
+.faq details[open]{background:#fff;box-shadow:var(--shadow)}
+.faq summary{font-weight:800;font-size:18px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"";flex:none;width:10px;height:10px;border-right:3px solid var(--accent);border-bottom:3px solid var(--accent);transform:rotate(-45deg);transition:transform .3s var(--ease);margin-left:4px}
+.faq details[open] summary::before{transform:rotate(45deg)}
+.faq .a{overflow:hidden}
 .faq details p{margin:8px 0 2px}
 footer{padding:26px 0 40px;color:var(--dim);font-weight:700;text-align:center;font-size:15px}
 footer a{color:var(--key)}
-@media (max-width:600px){.board{padding:20px 16px 16px;border-radius:22px}header nav{display:none}.hero{padding:34px 0 20px}}
+.top{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:999px;background:var(--accent);color:var(--on);border:0;cursor:pointer;font-size:22px;font-weight:800;box-shadow:0 10px 24px rgba(124,58,237,.3);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s var(--spring);z-index:4}
+.top.show{opacity:1;transform:none}
+@media (max-width:640px){
+  .board{padding:20px 16px 16px;border-radius:22px}.hero{padding:34px 0 20px}
+  .burger{display:flex}
+  nav{position:absolute;left:0;right:0;top:100%;background:rgba(249,239,244,.97);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:8px 12px 12px;gap:4px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform .3s var(--ease),opacity .25s}
+  nav.open{transform:none;opacity:1;pointer-events:auto}
+  nav a{font-size:18px;padding:10px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rise,.stagger>*{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
 </style>
 </head>
 <body>
+<div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
 
-<header><div class="wrap">
+<header id="top"><div class="wrap">
   <svg viewBox="0 0 208 168" aria-hidden="true"><path fill="#BFE3C6" fill-rule="evenodd" d="M12 26 H132 V152 H12 Z M44 44 h52 a11 11 0 0 1 11 11 v56 a11 11 0 0 1 -11 11 h-52 a11 11 0 0 1 -11 -11 v-56 a11 11 0 0 1 11 -11 z"/><rect x="12" y="26" width="120" height="126" fill="none" stroke="#111" stroke-width="9" stroke-linejoin="round"/><rect x="33" y="44" width="52" height="78" rx="11" fill="none" stroke="#111" stroke-width="9"/><g transform="rotate(13 152 78)"><rect x="126" y="39" width="52" height="78" rx="11" fill="#5BB8D9" stroke="#111" stroke-width="9"/></g></svg>
   <span class="brand"><span class="de">Displayschutz</span><span class="en">Screen Protectors</span></span>
-  <nav>
+  <button class="burger" type="button" aria-label="Menü / Menu" aria-expanded="false"><i></i><i></i><i></i></button>
+  <nav id="nav">
     <a href="#termine"><span class="de">Termine</span><span class="en">Dates</span></a>
     <a href="#preise"><span class="de">Preise</span><span class="en">Prices</span></a>
     <a href="#folien"><span class="de">Folien</span><span class="en">Films</span></a>
@@ -98,27 +167,27 @@ footer a{color:var(--key)}
 <div class="wrap">
 
 <div class="hero">
-  <svg viewBox="0 0 208 168" aria-hidden="true"><path fill="#BFE3C6" fill-rule="evenodd" d="M12 26 H132 V152 H12 Z M44 44 h52 a11 11 0 0 1 11 11 v56 a11 11 0 0 1 -11 11 h-52 a11 11 0 0 1 -11 -11 v-56 a11 11 0 0 1 11 -11 z"/><rect x="12" y="26" width="120" height="126" fill="none" stroke="#111" stroke-width="9" stroke-linejoin="round"/><rect x="33" y="44" width="52" height="78" rx="11" fill="none" stroke="#111" stroke-width="9"/><g transform="rotate(13 152 78)"><rect x="126" y="39" width="52" height="78" rx="11" fill="#5BB8D9" stroke="#111" stroke-width="9"/></g></svg>
-  <h1 class="de">Displayschutz</h1><h1 class="en">Screen Protectors</h1>
-  <p class="tag de">Für <span class="chip v">jedes</span> Handy – hier zugeschnitten</p>
-  <p class="tag en">For <span class="chip v">every</span> phone – cut to size right here</p>
-  <div class="chips">
-    <span class="chip de">Auch für Handys, die es nirgendwo gibt</span><span class="chip en">Even for phones no shop has film for</span>
-    <span class="chip p de">Im Laden ab 20 € – bei mir ab 3 €</span><span class="chip p en">In shops from €20 – here from €3</span>
-    <span class="chip de">Fertig, während du wartest</span><span class="chip en">Done while you wait</span>
+  <svg class="mark rise" style="--d:0s" viewBox="0 0 208 168" aria-hidden="true"><path fill="#BFE3C6" fill-rule="evenodd" d="M12 26 H132 V152 H12 Z M44 44 h52 a11 11 0 0 1 11 11 v56 a11 11 0 0 1 -11 11 h-52 a11 11 0 0 1 -11 -11 v-56 a11 11 0 0 1 11 -11 z"/><rect x="12" y="26" width="120" height="126" fill="none" stroke="#111" stroke-width="9" stroke-linejoin="round"/><rect x="33" y="44" width="52" height="78" rx="11" fill="none" stroke="#111" stroke-width="9"/><g class="piece"><g transform="rotate(13 152 78)"><rect x="126" y="39" width="52" height="78" rx="11" fill="#5BB8D9" stroke="#111" stroke-width="9"/></g></g></svg>
+  <h1 class="de rise" style="--d:.1s">Displayschutz</h1><h1 class="en rise" style="--d:.1s">Screen Protectors</h1>
+  <p class="tag de rise" style="--d:.2s">Für <span class="chip v">jedes</span> Handy – hier zugeschnitten</p>
+  <p class="tag en rise" style="--d:.2s">For <span class="chip v">every</span> phone – cut to size right here</p>
+  <div class="chips rise" style="--d:.3s">
+    <a class="chip de" href="#so">Auch für Handys, die es nirgendwo gibt</a><a class="chip en" href="#so">Even for phones no shop has film for</a>
+    <a class="chip p de" href="#preise">Im Laden ab 20 € – bei mir ab 3 €</a><a class="chip p en" href="#preise">In shops from €20 – here from €3</a>
+    <a class="chip de" href="#termine">Fertig, während du wartest</a><a class="chip en" href="#termine">Done while you wait</a>
   </div>
 </div>
 
-<section id="termine"><div class="board">
+<section id="termine"><div class="board rise">
   <h2><span class="pill"><span class="de">Nächster Verkauf</span><span class="en">Next market</span></span></h2>
   <div class="next" id="nextlist"></div>
   <p class="de" style="margin-top:14px">Meistens findest du mich auf dem Markt am Rathaus oder abends bei Veranstaltungen, zu denen ich eingeladen bin. Neue Termine stehen hier, sobald sie feststehen.</p>
   <p class="en" style="margin-top:14px">You’ll usually find me at the market by the Rathaus or at evening events I’m invited to. New dates show up here as soon as they’re fixed.</p>
 </div></section>
 
-<section id="preise"><div class="board">
+<section id="preise"><div class="board rise">
   <h2><span class="de">Preise</span><span class="en">Prices</span></h2>
-  <div class="prices">
+  <div class="prices stagger">
     <div class="price"><div class="amt">5 €</div><div><div class="n de">Klar</div><div class="n en">Clear</div><div class="d">9H · EPU</div></div></div>
     <div class="price"><div class="amt">7 €</div><div><div class="n de">Matt</div><div class="n en">Matte</div><div class="d de">kein Glanz, keine Fingerabdrücke</div><div class="d en">no glare, no fingerprints</div></div></div>
     <div class="price"><div class="amt">7 €</div><div><div class="n">Red Light</div><div class="d de">wärmerer Ton</div><div class="d en">warmer tone</div></div></div>
@@ -135,9 +204,9 @@ footer a{color:var(--key)}
   <p class="en" style="color:var(--dim);font-weight:700">Microfibre cloth included.</p>
 </div></section>
 
-<section id="folien"><div class="board">
+<section id="folien"><div class="board rise">
   <h2><span class="de">Welche Folie ist welche?</span><span class="en">Which film is which?</span></h2>
-  <div class="cols">
+  <div class="cols stagger">
     <div class="col">
       <h3 class="de">Die Sorten</h3><h3 class="en">The types</h3>
       <div class="de"><p><b>Klar</b> – ganz normal, unsichtbar.</p><p><b>Matt</b> – keine Spiegelung, keine Fingerabdrücke. Draußen viel besser.</p><p><b>Privacy</b> – von der Seite sieht man nichts.</p><p><b>Red Light</b> – wärmerer Ton, vor allem abends. Geschmackssache.</p></div>
@@ -161,9 +230,9 @@ footer a{color:var(--key)}
   </div>
 </div></section>
 
-<section id="so"><div class="board">
+<section id="so"><div class="board rise">
   <h2><span class="pill"><span class="de">So geht’s</span><span class="en">How it works</span></span></h2>
-  <div class="steps">
+  <div class="steps stagger">
     <div class="step"><div class="num">1</div><div class="t"><span class="de">Zeig mir dein Handy.</span><span class="en">Show me your phone.</span></div></div>
     <div class="step"><div class="num">2</div><div class="t"><span class="de">Sag mir die <b>Modellnummer</b>.<small>Einstellungen → Über das Telefon → Modellnummer</small></span><span class="en">Tell me the <b>model number</b>.<small>Settings → About phone → Model number</small></span></div></div>
     <div class="step"><div class="num">3</div><div class="t"><span class="de">Ich schneide die Folie sofort zu.</span><span class="en">I cut the film right away.</span></div></div>
@@ -174,27 +243,29 @@ footer a{color:var(--key)}
   <p style="margin-top:10px;color:var(--dim);font-weight:700"><span class="de">Falsch geschnitten? Sofort neu, kostenlos.</span><span class="en">Cut wrong? New one right away, free.</span></p>
 </div></section>
 
-<section id="ueber"><div class="board">
+<section id="ueber"><div class="board rise">
   <h2><span class="de">Wer schneidet hier?</span><span class="en">Who’s cutting?</span></h2>
   <div class="de"><p>Ich bin Peter, 11, aus Berlin. Die Schneidemaschine habe ich auf der IFA 2026 bekommen, direkt vom Stand des Herstellers. Sie schneidet aus einem Bogen Folie genau die Form für dein Display – deshalb passt sie auch bei Handys, für die kein Laden eine Folie hat.</p><p>Ich verkaufe keine Wunder. Was eine Folie kann und was nicht, steht oben – und das sage ich dir am Stand genauso.</p></div>
   <div class="en"><p>I’m Peter, 11, from Berlin. I got the cutting machine at IFA 2026, straight from the maker’s stand. It cuts the exact shape of your screen out of a sheet of film – which is why it works even for phones no shop has a protector for.</p><p>I don’t sell miracles. What a film can and can’t do is written above – and I’ll tell you the same at the stand.</p></div>
 </div></section>
 
-<section id="fragen"><div class="board faq">
+<section id="fragen"><div class="board faq rise">
   <h2><span class="de">Fragen</span><span class="en">Questions</span></h2>
-  <details><summary><span class="de">Passt das wirklich für jedes Handy?</span><span class="en">Does it really fit every phone?</span></summary><p class="de">Ja. Die Maschine schneidet nach Modell, nicht nach Lagerbestand. Auch alte, seltene oder in Deutschland nie verkaufte Handys. Du brauchst nur die Modellnummer.</p><p class="en">Yes. The machine cuts by model, not by what’s in stock. Old, rare or never-sold-in-Germany phones too. All you need is the model number.</p></details>
-  <details><summary><span class="de">Wie lange dauert es?</span><span class="en">How long does it take?</span></summary><p class="de">Ein paar Minuten: schneiden, Display reinigen, aufkleben – und du gehst mit fertiger Folie weiter.</p><p class="en">A few minutes: cut, clean the screen, stick it on – and you walk off with the film already on.</p></details>
-  <details><summary><span class="de">Klebst du die Folie auch auf?</span><span class="en">Do you put the film on too?</span></summary><p class="de">Ja, am Stand. Dein Handy bleibt dabei auf dem Tisch – du legst es hin und nimmst es selbst wieder.</p><p class="en">Yes, at the stand. Your phone stays on the table – you put it down and pick it up yourself.</p></details>
-  <details><summary><span class="de">Tablet, Switch, Smartwatch, Thermomix?</span><span class="en">Tablet, Switch, smartwatch, Thermomix?</span></summary><p class="de">Geht alles. Große Displays brauchen den großen Bogen (10 €). Einfach fragen.</p><p class="en">All possible. Big screens need the big sheet (€10). Just ask.</p></details>
-  <details><summary><span class="de">Was ist, wenn die Folie nicht passt?</span><span class="en">What if the film doesn’t fit?</span></summary><p class="de">Falsch geschnitten? Sofort neu, kostenlos. Kleine Blasen verschwinden von selbst nach 1–2 Tagen.</p><p class="en">Cut wrong? New one right away, free. Small bubbles disappear by themselves in 1–2 days.</p></details>
-  <details><summary><span class="de">Kann ich vorbestellen?</span><span class="en">Can I order ahead?</span></summary><p class="de">Komm einfach zum nächsten Termin, dann schneide ich sie vor dir. Die Termine stehen oben.</p><p class="en">Just come to the next date and I’ll cut it in front of you. The dates are at the top.</p></details>
+  <details><summary><span class="de">Passt das wirklich für jedes Handy?</span><span class="en">Does it really fit every phone?</span></summary><div class="a"><p class="de">Ja. Die Maschine schneidet nach Modell, nicht nach Lagerbestand. Auch alte, seltene oder in Deutschland nie verkaufte Handys. Du brauchst nur die Modellnummer.</p><p class="en">Yes. The machine cuts by model, not by what’s in stock. Old, rare or never-sold-in-Germany phones too. All you need is the model number.</p></div></details>
+  <details><summary><span class="de">Wie lange dauert es?</span><span class="en">How long does it take?</span></summary><div class="a"><p class="de">Ein paar Minuten: schneiden, Display reinigen, aufkleben – und du gehst mit fertiger Folie weiter.</p><p class="en">A few minutes: cut, clean the screen, stick it on – and you walk off with the film already on.</p></div></details>
+  <details><summary><span class="de">Klebst du die Folie auch auf?</span><span class="en">Do you put the film on too?</span></summary><div class="a"><p class="de">Ja, am Stand. Dein Handy bleibt dabei auf dem Tisch – du legst es hin und nimmst es selbst wieder.</p><p class="en">Yes, at the stand. Your phone stays on the table – you put it down and pick it up yourself.</p></div></details>
+  <details><summary><span class="de">Tablet, Switch, Smartwatch, Thermomix?</span><span class="en">Tablet, Switch, smartwatch, Thermomix?</span></summary><div class="a"><p class="de">Geht alles. Große Displays brauchen den großen Bogen (10 €). Einfach fragen.</p><p class="en">All possible. Big screens need the big sheet (€10). Just ask.</p></div></details>
+  <details><summary><span class="de">Was ist, wenn die Folie nicht passt?</span><span class="en">What if the film doesn’t fit?</span></summary><div class="a"><p class="de">Falsch geschnitten? Sofort neu, kostenlos. Kleine Blasen verschwinden von selbst nach 1–2 Tagen.</p><p class="en">Cut wrong? New one right away, free. Small bubbles disappear by themselves in 1–2 days.</p></div></details>
+  <details><summary><span class="de">Kann ich vorbestellen?</span><span class="en">Can I order ahead?</span></summary><div class="a"><p class="de">Komm einfach zum nächsten Termin, dann schneide ich sie vor dir. Die Termine stehen oben.</p><p class="en">Just come to the next date and I’ll cut it in front of you. The dates are at the top.</p></div></details>
 </div></section>
 
-<section id="kontakt"><div class="board">
+<section id="kontakt"><div class="board rise">
   <h2><span class="de">Kontakt</span><span class="en">Contact</span></h2>
   <p class="de">Frage zu deinem Handy, einem Termin oder einer Bestellung für mehrere Leute? Schreib mir:</p>
   <p class="en">A question about your phone, a date, or an order for several people? Write to me:</p>
-  <a class="btn" href="mailto:stam.peter2015@gmail.com">stam.peter2015@gmail.com</a>
+  <a class="btn" id="mail" href="mailto:stam.peter2015@gmail.com">stam.peter2015@gmail.com</a>
+  <button class="btn ghost" type="button" id="copy"><span class="de">Adresse kopieren</span><span class="en">Copy address</span></button>
+  <span class="copied" id="copied"><span class="de">Kopiert ✓</span><span class="en">Copied ✓</span></span>
 </div></section>
 
 </div>
@@ -203,10 +274,15 @@ footer a{color:var(--key)}
   <p><span class="de">Displayschutz · Berlin · Preise können sich ändern.</span><span class="en">Screen Protectors · Berlin · Prices may change.</span></p>
 </div></footer>
 
+<button class="top" id="totop" type="button" aria-label="Nach oben / Back to top">↑</button>
+
 <script src="termine.js"></script>
 <script>
 (function () {
   var html = document.documentElement;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* language */
   function setLang(l) {
     html.lang = l;
     document.querySelectorAll('.lang button').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === l); });
@@ -217,6 +293,7 @@ footer a{color:var(--key)}
   var saved = null; try { saved = localStorage.getItem('passgenau.lang'); } catch (e) {}
   if (saved !== 'de' && saved !== 'en') saved = /^en/i.test(navigator.language || '') ? 'en' : 'de';
 
+  /* dates */
   var MON = { de: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
               en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] };
   var DAY = { de: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
@@ -232,14 +309,85 @@ footer a{color:var(--key)}
         : 'The next date isn’t fixed yet. Check back soon – as soon as it is, it’ll be here.') + '</div>';
       return;
     }
-    box.innerHTML = list.map(function (t) {
+    box.innerHTML = list.map(function (t, i) {
       var d = new Date(t.date + 'T12:00:00');
-      return '<div class="date"><div class="day"><span>' + DAY[l][d.getDay()] + '</span><b>' + d.getDate() + '</b><span>' + MON[l][d.getMonth()] + '</span></div>' +
+      return '<div class="date" style="animation-delay:' + (i * .1) + 's"><div class="day"><span>' + DAY[l][d.getDay()] + '</span><b>' + d.getDate() + '</b><span>' + MON[l][d.getMonth()] + '</span></div>' +
         '<div><div class="where">' + esc(t.place) + '</div><div class="meta">' + esc([t.time, t.address].filter(Boolean).join(' · ')) + '</div>' +
         (t.note ? '<div class="meta">' + esc(t.note) + '</div>' : '') + '</div></div>';
     }).join('');
   }
   setLang(saved);
+
+  /* things rise in as they scroll into view */
+  var toReveal = document.querySelectorAll('.rise, .stagger');
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    toReveal.forEach(function (el) { io.observe(el); });
+    // safety net: if the observer never fires (an odd browser, a frozen tab), nothing stays hidden
+    setTimeout(function () { toReveal.forEach(function (el) { if (!el.classList.contains('in') && el.getBoundingClientRect().top < innerHeight * 1.5) el.classList.add('in'); }); }, 1800);
+  } else { toReveal.forEach(function (el) { el.classList.add('in'); }); }
+
+  /* header shadow, back-to-top, menu highlight */
+  var header = document.querySelector('header'), top = document.getElementById('totop');
+  var links = [].slice.call(document.querySelectorAll('nav a'));
+  var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  function onScroll() {
+    var y = window.scrollY || 0;
+    header.classList.toggle('scrolled', y > 8);
+    top.classList.toggle('show', y > 600);
+    var cur = -1;
+    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= 120) cur = i; });
+    links.forEach(function (a, i) { a.classList.toggle('on', i === cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  top.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
+
+  /* phone menu */
+  var burger = document.querySelector('.burger'), nav = document.getElementById('nav');
+  function closeMenu() { nav.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+  burger.addEventListener('click', function () {
+    var open = !nav.classList.contains('open');
+    nav.classList.toggle('open', open); burger.classList.toggle('open', open); burger.setAttribute('aria-expanded', String(open));
+  });
+  links.forEach(function (a) { a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+
+  /* FAQ opens and closes smoothly */
+  document.querySelectorAll('.faq details').forEach(function (d) {
+    var s = d.querySelector('summary'), a = d.querySelector('.a');
+    s.addEventListener('click', function (e) {
+      if (reduce || !a.animate) return;
+      e.preventDefault();
+      if (d.open) {
+        var h = a.offsetHeight;
+        a.animate([{ height: h + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 260, easing: 'ease-out' }).onfinish = function () { d.open = false; };
+      } else {
+        d.open = true;
+        var h2 = a.offsetHeight;
+        a.animate([{ height: '0px', opacity: 0 }, { height: h2 + 'px', opacity: 1 }], { duration: 300, easing: 'cubic-bezier(.2,.7,.2,1)' });
+      }
+    });
+  });
+
+  /* button ripple + copy address */
+  document.querySelectorAll('.btn').forEach(function (b) {
+    b.addEventListener('pointerdown', function (e) {
+      if (reduce) return;
+      var r = b.getBoundingClientRect(), s = document.createElement('span'); s.className = 'ripple';
+      var size = Math.max(r.width, r.height);
+      s.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - r.left - size / 2) + 'px;top:' + (e.clientY - r.top - size / 2) + 'px';
+      b.appendChild(s); setTimeout(function () { s.remove(); }, 650);
+    });
+  });
+  var copy = document.getElementById('copy'), copied = document.getElementById('copied');
+  copy.addEventListener('click', function () {
+    var addr = document.getElementById('mail').textContent.trim();
+    function done() { copied.classList.add('show'); setTimeout(function () { copied.classList.remove('show'); }, 1800); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(done, function () { window.prompt('', addr); });
+    else window.prompt('', addr);
+  });
 })();
 </script>
 </body>
