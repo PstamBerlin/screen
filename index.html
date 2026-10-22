@@ -91,6 +91,7 @@ b,strong{color:var(--key)}
 .price:hover{transform:translateY(-5px) scale(1.02);box-shadow:var(--shadow-up);border-color:#CDB8FF}
 .price .amt{font-size:34px;font-weight:800;color:var(--accent);min-width:74px}
 .price .n{font-weight:800;font-size:19px}.price .d{color:var(--dim);font-weight:700;font-size:15px}
+.low{display:inline-block;margin-top:4px;background:var(--chipR-bg);color:var(--chipR);border-radius:999px;padding:1px 10px;font-size:13px;font-weight:800}
 .extras{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .extra{background:var(--chipL-bg);color:var(--chipL);border-radius:999px;padding:6px 14px;font-weight:800}
 .vs{font-size:20px;font-weight:800;margin-top:14px}
@@ -190,7 +191,7 @@ footer a{color:var(--key)}
   <div class="prices stagger">
     <div class="price"><div class="amt">5 €</div><div><div class="n de">Klar</div><div class="n en">Clear</div><div class="d">9H · EPU</div></div></div>
     <div class="price"><div class="amt">7 €</div><div><div class="n de">Matt</div><div class="n en">Matte</div><div class="d de">kein Glanz, keine Fingerabdrücke</div><div class="d en">no glare, no fingerprints</div></div></div>
-    <div class="price"><div class="amt">7 €</div><div><div class="n">Red Light</div><div class="d de">wärmerer Ton</div><div class="d en">warmer tone</div></div></div>
+    <div class="price"><div class="amt">7 €</div><div><div class="n">Red Light</div><div class="d de">wärmerer Ton</div><div class="d en">warmer tone</div><span class="low de">nur noch 2</span><span class="low en">only 2 left</span></div></div>
     <div class="price"><div class="amt">8 €</div><div><div class="n">Privacy</div><div class="d de">seitlich schwarz</div><div class="d en">black from the side</div></div></div>
     <div class="price"><div class="amt">10 €</div><div><div class="n">Tablet</div><div class="d de">große Folie</div><div class="d en">big sheet</div></div></div>
   </div>
@@ -209,8 +210,8 @@ footer a{color:var(--key)}
   <div class="cols stagger">
     <div class="col">
       <h3 class="de">Die Sorten</h3><h3 class="en">The types</h3>
-      <div class="de"><p><b>Klar</b> – ganz normal, unsichtbar.</p><p><b>Matt</b> – keine Spiegelung, keine Fingerabdrücke. Draußen viel besser.</p><p><b>Privacy</b> – von der Seite sieht man nichts.</p><p><b>Red Light</b> – wärmerer Ton, vor allem abends. Geschmackssache.</p></div>
-      <div class="en"><p><b>Clear</b> – the normal one, invisible.</p><p><b>Matte</b> – no glare, no fingerprints. Much better outdoors.</p><p><b>Privacy</b> – from the side you see nothing.</p><p><b>Red Light</b> – warmer tone, mostly for evenings. A matter of taste.</p></div>
+      <div class="de"><p><b>Klar</b> – ganz normal, unsichtbar.</p><p><b>Matt</b> – keine Spiegelung, keine Fingerabdrücke. Draußen viel besser.</p><p><b>Privacy</b> – von der Seite sieht man nichts.</p><p><b>Red Light</b> – wärmerer Ton, vor allem abends. Geschmackssache. <span class="low">Nur noch 2 da.</span></p></div>
+      <div class="en"><p><b>Clear</b> – the normal one, invisible.</p><p><b>Matte</b> – no glare, no fingerprints. Much better outdoors.</p><p><b>Privacy</b> – from the side you see nothing.</p><p><b>Red Light</b> – warmer tone, mostly for evenings. A matter of taste. <span class="low">Only 2 left.</span></p></div>
     </div>
     <div class="col">
       <h3 class="de">9H oder dünn?</h3><h3 class="en">9H or thin?</h3>
