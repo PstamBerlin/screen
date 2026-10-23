@@ -53,6 +53,7 @@ textarea{min-height:64px;resize:vertical}
 .pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:10px;background:transparent;color:var(--dim);cursor:pointer;display:grid;place-items:center}
 .pw button:hover{background:var(--chipL-bg);color:var(--chipL)}.pw button.on{color:var(--accent)}
 .pw svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+input.bad{border-color:#d6453d;box-shadow:0 0 0 4px rgba(214,69,61,.14)}
 .err{color:#d6453d;font-weight:800;margin:10px 0 0;min-height:1.4em}
 .out{color:var(--dim);font-weight:700;font-size:14px}
 a{color:var(--key)}
@@ -194,16 +195,22 @@ a{color:var(--key)}
     var last = document.querySelector('.termin:last-child input'); if (last) last.focus();
   });
   var msg = $('#savemsg');
-  function say(text, err) { msg.textContent = text; msg.classList.toggle('err', !!err); msg.classList.add('show'); clearTimeout(say.t); say.t = setTimeout(function () { msg.classList.remove('show'); }, 2600); }
+  function say(text, err, stay) { msg.textContent = text; msg.classList.toggle('err', !!err); msg.classList.add('show'); clearTimeout(say.t); if (!stay) say.t = setTimeout(function () { msg.classList.remove('show'); }, 2600); }
   $('#save').addEventListener('click', function () {
     readForm();
-    var bad = data.termine.filter(function (t) { return !/^\d{4}-\d{2}-\d{2}$/.test(t.date) || !t.place; });
-    if (bad.length) { say('Jeder Termin braucht ein Datum und einen Ort.', true); return; }
+    document.querySelectorAll('.termin input').forEach(function (i) { i.classList.remove('bad'); });
+    var firstBad = null;
+    document.querySelectorAll('.termin').forEach(function (d) {
+      var date = d.querySelector('[data-k=date]'), place = d.querySelector('[data-k=place]');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date.value)) { date.classList.add('bad'); firstBad = firstBad || date; }
+      if (!place.value.trim()) { place.classList.add('bad'); firstBad = firstBad || place; }
+    });
+    if (firstBad) { say('Ein Termin hat noch kein Datum oder keinen Ort (rot markiert). Fülle es aus, oder lösche den Termin.', true, true); firstBad.focus(); firstBad.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     data.termine.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
     var b = $('#save'); b.disabled = true;
     rpc('screen_admin_save', { u: login.u, p: login.p, d: data })
       .then(function () { say('Gespeichert ✓'); $('#updated').textContent = 'Zuletzt gespeichert: ' + new Date().toLocaleString('de-DE'); renderTermine(); })
-      .catch(function (e) { say(/wrong login/.test(e.message) ? 'Login abgelaufen, bitte neu anmelden.' : 'Speichern ging nicht: ' + e.message, true); })
+      .catch(function (e) { console.error('save failed', e); say(/wrong login/.test(e.message) ? 'Login abgelaufen, bitte neu anmelden.' : 'Speichern ging nicht: ' + e.message, true, true); })
       .then(function () { b.disabled = false; });
   });
 
