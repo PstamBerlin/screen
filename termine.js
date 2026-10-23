@@ -5,4 +5,5 @@
 window.TERMINE = [
   { date: '2026-10-22', time: 'morgens', place: 'Betabreakfast – betahaus Kreuzberg', address: 'Rudi-Dutschke-Str. 23, 10969 Berlin', note: '' },
   { date: '2026-10-29', time: 'morgens', place: 'Betabreakfast – betahaus Kreuzberg', address: 'Rudi-Dutschke-Str. 23, 10969 Berlin', note: '' },
+  { date: '2026-10-29', time: 'abends', place: 'MotionLab – Halloween-Dinner', address: '', note: '' },
 ];
