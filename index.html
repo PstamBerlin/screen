@@ -286,8 +286,8 @@ footer a{color:var(--key)}
       <button class="btn" type="submit" id="booksend"><span class="de">Einladung abschicken</span><span class="en">Send the invitation</span></button>
       <span class="status" id="bookstatus"></span>
     </div>
-    <p class="de" style="color:var(--dim);font-weight:700;font-size:15px;margin:12px 0 0">Kostet nichts – die Leute bezahlen ihre Folie bei mir, bar. Deine Angaben sehe nur ich, und ich melde mich meist am selben Tag.</p>
-    <p class="en" style="color:var(--dim);font-weight:700;font-size:15px;margin:12px 0 0">It costs nothing – people pay me for their protector, in cash. Only I see what you type, and I usually reply the same day.</p>
+    <p class="de" style="color:var(--dim);font-weight:700;font-size:15px;margin:12px 0 0">Kostet nichts – die Leute bezahlen ihre Folie bei mir, bar. Deine Angaben sehe nur ich, und ich melde mich bei dir.</p>
+    <p class="en" style="color:var(--dim);font-weight:700;font-size:15px;margin:12px 0 0">It costs nothing – people pay me for their protector, in cash. Only I see what you type, and I’ll get back to you.</p>
   </form>
   <div class="thanks" id="bookthanks" hidden></div>
 </div></section>
@@ -483,12 +483,21 @@ footer a{color:var(--key)}
         : fetch(SB + '/rest/v1/rpc/screen_request', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
             .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); });
       send.then(function () {
+        // and an email to Peter, saying who and how to reach them; the admin page keeps the list either way
+        if (!form.querySelector('[name=website]').value) fetch('https://formsubmit.co/ajax/stam.peter2015@gmail.com', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            _subject: 'Einladung von ' + body.p_name + ' (' + body.p_contact + ')', _template: 'table', _captcha: 'false',
+            Name: body.p_name, 'E-Mail oder Telefon': body.p_contact, Wo: body.p_item, Wann: body.p_opt, 'Wie viele Leute': body.p_pickup,
+            Nachricht: body.p_message, Sprache: body.p_lang, Admin: 'https://screen.peterstam.eu/admin/'
+          })
+        }).catch(function () {});
         var th = document.getElementById('bookthanks');
         th.innerHTML = kind === 'protector'
-          ? T('Danke, ' + esc(body.p_name) + '! Deine Folie ist notiert.<p>Ich melde mich bei dir, meist am selben Tag, und sage dir, wann sie fertig ist.</p>',
-              'Thanks, ' + esc(body.p_name) + '! Your protector is noted.<p>I’ll get back to you, usually the same day, and tell you when it’s ready.</p>')
-          : T('Danke, ' + esc(body.p_name) + '! Die Einladung ist angekommen.<p>Ich melde mich bei dir, meist am selben Tag.</p>',
-              'Thanks, ' + esc(body.p_name) + '! Your invitation has arrived.<p>I’ll get back to you, usually the same day.</p>');
+          ? T('Danke, ' + esc(body.p_name) + '! Deine Folie ist notiert.<p>Ich melde mich bei dir und sage dir, wann sie fertig ist.</p>',
+              'Thanks, ' + esc(body.p_name) + '! Your protector is noted.<p>I’ll get back to you and tell you when it’s ready.</p>')
+          : T('Danke, ' + esc(body.p_name) + '! Die Einladung ist angekommen.<p>Ich melde mich bei dir.</p>',
+              'Thanks, ' + esc(body.p_name) + '! Your invitation has arrived.<p>I’ll get back to you.</p>');
         form.hidden = true; th.hidden = false;
       }).catch(function () {
         status.className = 'status err';
