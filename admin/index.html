@@ -109,6 +109,7 @@ a{color:var(--key)}
   </div>
 </div>
 
+<script src="../termine.js"></script>
 <script>
 (function () {
   var SB = 'https://zxsgxihknyexyzzpddmg.supabase.co';
@@ -177,7 +178,9 @@ a{color:var(--key)}
     data.banner = { de: $('#bde').value.trim(), en: $('#ben').value.trim() };
   }
   function showEditor() {
-    if (!data.termine) data.termine = [];
+    // the first time: start from what the website shows now
+    if (!data.termine) data.termine = (window.TERMINE || []).map(function (t) { return { date: t.date || '', time: t.time || '', place: t.place || '', address: t.address || '', note: t.note || '' }; });
+    if (!data.notes) data.notes = { redlight_de: 'nur noch 2', redlight_en: 'only 2 left' };
     $('#loginbox').hidden = true; $('#editor').hidden = false; $('#logout').hidden = false;
     renderTermine(); renderPrices();
   }
