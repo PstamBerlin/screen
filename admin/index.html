@@ -57,6 +57,22 @@ input.bad{border-color:#d6453d;box-shadow:0 0 0 4px rgba(214,69,61,.14)}
 .err{color:#d6453d;font-weight:800;margin:10px 0 0;min-height:1.4em}
 .out{color:var(--dim);font-weight:700;font-size:14px}
 a{color:var(--key)}
+.req{background:var(--soft);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;animation:pop .35s var(--spring) both;transition:opacity .3s}
+.req.done{opacity:.55}
+.req .head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:4px}
+.req .kind{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 10px;background:var(--chipL-bg);color:var(--chipL)}
+.req .kind.event{background:#FFE4D1;color:#7C2D12}
+.req .head b{font-size:17px}
+.req .when{color:var(--dim);font-weight:700;font-size:13px;margin-left:auto}
+.req .det{font-weight:700;color:var(--ink);margin:2px 0}
+.req .det span{color:var(--dim)}
+.req .text{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0;white-space:pre-wrap;font-weight:600;font-size:15px}
+.req .foot{display:flex;align-items:center;gap:10px;margin-top:6px}
+.req .foot label{display:flex;align-items:center;gap:8px;margin:0;font-size:14px;color:var(--ink);cursor:pointer}
+.req .foot input{width:auto}
+.filter{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-weight:800;font-size:14px;color:var(--dim)}
+.filter input{width:auto}
+.badge{display:inline-block;background:var(--chipR-bg);color:var(--chipR);border-radius:999px;padding:1px 10px;font-size:14px;margin-left:8px;vertical-align:middle}
 @media (max-width:600px){.price{grid-template-columns:1fr 1fr}.price .n{grid-column:1/-1;padding:0}}
 </style>
 </head>
@@ -85,6 +101,13 @@ a{color:var(--key)}
   </div>
 
   <div id="editor" hidden>
+    <div class="board">
+      <h2>Anfragen <span class="badge" id="reqbadge" hidden></span></h2>
+      <p class="hint">Was über „Buchen“ auf der Website reinkommt: vorbestellte Folien und Einladungen. Melde dich bei der Person, und hake die Anfrage ab, wenn sie erledigt ist.</p>
+      <label class="filter"><input type="checkbox" id="onlyopen" checked> Nur offene zeigen</label>
+      <div id="requests"><p class="hint">Lade …</p></div>
+    </div>
+
     <div class="board">
       <h2>Termine</h2>
       <p class="hint">Wann und wo du verkaufst. Vergangene Termine verschwinden auf der Website von selbst.</p>
@@ -135,6 +158,49 @@ a{color:var(--key)}
       .then(function (r) { return r.json(); })
       .then(function (rows) { var row = rows && rows[0]; data = (row && row.data) || {}; if (row && row.updated_at) $('#updated').textContent = 'Zuletzt gespeichert: ' + new Date(row.updated_at).toLocaleString('de-DE'); });
   }
+
+  /* ---- requests from the Book me form ---- */
+  var requests = [];
+  var FILM = { klar: 'Klar', matt: 'Matt', privacy: 'Privacy', redlight: 'Red Light', tpu: 'TPU (dünn)', tablet: 'Tablet / Watch', egal: 'weiß nicht – beraten' };
+  var PICK = { termin: 'nächster Termin', 42: '42 Berlin', betahaus: 'betahaus', post: 'per Post (+1,60 €)' };
+  function contactLink(c) {
+    var t = String(c || '').trim();
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t)) return '<a href="mailto:' + esc(t) + '">' + esc(t) + '</a>';
+    if (/^\+?[\d\s()\/-]{6,}$/.test(t)) return '<a href="tel:' + esc(t.replace(/[^\d+]/g, '')) + '">' + esc(t) + '</a>';
+    return esc(t);
+  }
+  function renderRequests() {
+    var box = $('#requests'), only = $('#onlyopen').checked, open = requests.filter(function (r) { return !r.done; }).length;
+    var badge = $('#reqbadge'); badge.hidden = !open; badge.textContent = open + ' offen';
+    var list = only ? requests.filter(function (r) { return !r.done; }) : requests;
+    if (!list.length) { box.innerHTML = '<p class="hint">' + (requests.length ? 'Alles erledigt ✓' : 'Noch keine Einladungen.') + '</p>'; return; }
+    box.innerHTML = list.map(function (r) {
+      var ev = r.kind === 'event';
+      var det = ev
+        ? '<div class="det"><span>Wo:</span> ' + esc(r.item) + (r.opt ? ' &nbsp;<span>Wann:</span> ' + esc(r.opt) : '') + (r.pickup ? ' &nbsp;<span>Leute:</span> ' + esc(r.pickup) : '') + '</div>'
+        : '<div class="det"><span>Handy:</span> ' + esc(r.item) + ' &nbsp;<span>Folie:</span> ' + esc(FILM[r.opt] || r.opt) + ' &nbsp;<span>Abholen:</span> ' + esc(PICK[r.pickup] || r.pickup) + '</div>';
+      return '<div class="req' + (r.done ? ' done' : '') + '" data-id="' + r.id + '">' +
+        '<div class="head"><span class="kind' + (ev ? ' event' : '') + '">' + (ev ? 'Einladung' : 'Folie') + '</span><b>' + esc(r.name) + '</b>' + contactLink(r.contact) +
+        '<span class="when">' + new Date(r.created_at).toLocaleString('de-DE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + (r.lang === 'en' ? ' · EN' : '') + '</span></div>' +
+        det + (r.message ? '<div class="text">' + esc(r.message) + '</div>' : '') +
+        '<div class="foot"><label><input type="checkbox" data-done' + (r.done ? ' checked' : '') + '> Erledigt</label></div></div>';
+    }).join('');
+    box.querySelectorAll('[data-done]').forEach(function (cb) {
+      cb.addEventListener('change', function () {
+        var id = Number(cb.closest('.req').dataset.id), r = requests.filter(function (x) { return x.id === id; })[0];
+        cb.disabled = true;
+        rpc('screen_admin_request_done', { u: login.u, p: login.p, rid: id, d: cb.checked })
+          .then(function () { r.done = cb.checked; renderRequests(); })
+          .catch(function (e) { cb.checked = !cb.checked; cb.disabled = false; say('Ging nicht: ' + e.message, true, true); });
+      });
+    });
+  }
+  function loadRequests() {
+    return rpc('screen_admin_requests', { u: login.u, p: login.p })
+      .then(function (rows) { requests = Array.isArray(rows) ? rows : []; renderRequests(); })
+      .catch(function (e) { $('#requests').innerHTML = '<p class="hint">Einladungen konnten nicht geladen werden: ' + esc(e.message) + '</p>'; });
+  }
+  $('#onlyopen').addEventListener('change', renderRequests);
 
   /* ---- the editor ---- */
   function terminRow(t, i) {
@@ -188,7 +254,7 @@ a{color:var(--key)}
     if (!data.termine) data.termine = (window.TERMINE || []).map(function (t) { return { date: t.date || '', time: t.time || '', place: t.place || '', address: t.address || '', note: t.note || '' }; });
     if (!data.notes) data.notes = { redlight_de: 'nur noch 2', redlight_en: 'only 2 left' };
     $('#loginbox').hidden = true; $('#editor').hidden = false; $('#logout').hidden = false;
-    renderTermine(); renderPrices();
+    renderTermine(); renderPrices(); loadRequests();
   }
   $('#addtermin').addEventListener('click', function () {
     readForm(); data.termine.push({ date: '', time: '', place: '', address: '', note: '' }); renderTermine();

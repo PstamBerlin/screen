@@ -43,7 +43,7 @@ header .wrap{display:flex;align-items:center;gap:12px;padding:10px 16px;position
 header svg{width:44px;height:36px;flex:none}
 .brand{font-weight:800;letter-spacing:.02em;font-size:19px}
 nav{margin-left:auto;display:flex;gap:2px;flex-wrap:wrap;justify-content:flex-end}
-nav a{position:relative;color:var(--dim);text-decoration:none;font-weight:700;padding:7px 10px;border-radius:999px;font-size:15px;transition:color .2s,background .2s}
+nav a{position:relative;color:var(--dim);text-decoration:none;font-weight:700;padding:7px 8px;border-radius:999px;font-size:14.5px;transition:color .2s,background .2s}
 nav a:hover,nav a.on{background:var(--chipL-bg);color:var(--chipL)}
 .lang{display:flex;border:2px solid var(--line);border-radius:999px;overflow:hidden;margin-left:6px;position:relative;isolation:isolate}
 .lang button{border:0;background:transparent;font:inherit;font-weight:800;padding:6px 12px;cursor:pointer;color:var(--dim);position:relative;z-index:1;transition:color .25s}
@@ -130,16 +130,33 @@ b,strong{color:var(--key)}
 .faq details[open] summary::before{transform:rotate(45deg)}
 .faq .a{overflow:hidden}
 .faq details p{margin:8px 0 2px}
+/* the booking form */
+.form label{display:block;font-weight:800;font-size:14px;color:var(--dim);margin:0 0 4px}
+.form label small{font-weight:700}
+.form input,.form select,.form textarea{width:100%;font:inherit;font-weight:700;color:var(--ink);background:var(--soft);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;outline:0;transition:border-color .2s,box-shadow .2s}
+.form input:focus,.form select:focus,.form textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,58,237,.14)}
+.form input.bad,.form select.bad{border-color:#d6453d;box-shadow:0 0 0 4px rgba(214,69,61,.14)}
+.form textarea{min-height:84px;resize:vertical}
+.form .row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:12px}
+.form .fields{animation:pop .35s var(--ease) both}
+.form .hp{position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden}
+.form .foot{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:4px}
+.form .status{font-weight:800;color:var(--key);min-height:1.4em}
+.form .status.err{color:#d6453d}
+.thanks{background:#DCF5E3;color:#14532D;border:1.5px solid #A7E3B8;border-radius:18px;padding:16px 18px;font-weight:800;font-size:18px;animation:pop .5s var(--spring) both}
+.thanks p{margin:6px 0 0;font-weight:700;font-size:16px}
 footer{padding:26px 0 40px;color:var(--dim);font-weight:700;text-align:center;font-size:15px}
 footer a{color:var(--key)}
 .top{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:999px;background:var(--accent);color:var(--on);border:0;cursor:pointer;font-size:22px;font-weight:800;box-shadow:0 10px 24px rgba(124,58,237,.3);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s var(--spring);z-index:4}
 .top.show{opacity:1;transform:none}
-@media (max-width:640px){
-  .board{padding:20px 16px 16px;border-radius:22px}.hero{padding:34px 0 20px}
+@media (max-width:860px){
   .burger{display:flex}
   nav{position:absolute;left:0;right:0;top:100%;background:rgba(249,239,244,.97);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:8px 12px 12px;gap:4px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform .3s var(--ease),opacity .25s}
   nav.open{transform:none;opacity:1;pointer-events:auto}
   nav a{font-size:18px;padding:10px 14px}
+}
+@media (max-width:640px){
+  .board{padding:20px 16px 16px;border-radius:22px}.hero{padding:34px 0 20px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -160,6 +177,7 @@ footer a{color:var(--key)}
     <a href="#preise"><span class="de">Preise</span><span class="en">Prices</span></a>
     <a href="#folien"><span class="de">Folien</span><span class="en">Films</span></a>
     <a href="#so"><span class="de">So geht’s</span><span class="en">How it works</span></a>
+    <a href="#buchen"><span class="de">Einladen</span><span class="en">Invite me</span></a>
     <a href="#fragen"><span class="de">Fragen</span><span class="en">Questions</span></a>
     <a href="#kontakt"><span class="de">Kontakt</span><span class="en">Contact</span></a>
   </nav>
@@ -246,6 +264,34 @@ footer a{color:var(--key)}
   <p style="margin-top:10px;color:var(--dim);font-weight:700"><span class="de">Falsch geschnitten? Sofort neu, kostenlos.</span><span class="en">Cut wrong? New one right away, free.</span></p>
 </div></section>
 
+<section id="buchen"><div class="board rise">
+  <h2><span class="pill"><span class="de">Lade mich ein</span><span class="en">Invite me</span></span></h2>
+  <p class="de">Coworking, Büro, Schule, Verein, Party, Elternabend: <b>ich komme mit der Maschine</b> und schneide vor Ort, für jedes Handy, in zwei Minuten. Ich brauche nur einen Tisch und eine Steckdose. Sag mir wo und wann:</p>
+  <p class="en">Coworking space, office, school, club, party, parents’ evening: <b>I come with the machine</b> and cut on the spot, for any phone, in two minutes. All I need is a table and a socket. Tell me where and when:</p>
+  <form class="form" id="book" novalidate>
+    <div class="fields" data-for="event">
+      <div class="row">
+        <div><label for="e-item"><span class="de">Wo</span><span class="en">Where</span></label><input id="e-item" name="item" placeholder="betahaus, 42 Berlin, Schule XY …" autocomplete="organization"></div>
+        <div><label for="e-opt"><span class="de">Wann</span><span class="en">When</span></label><input id="e-opt" name="opt" placeholder="Do 6. Nov, 9–12 Uhr" autocomplete="off"></div>
+        <div><label for="e-pickup"><span class="de">Wie viele Leute etwa?</span><span class="en">Roughly how many people?</span></label><input id="e-pickup" name="pickup" placeholder="30" autocomplete="off"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div><label for="b-name"><span class="de">Dein Name</span><span class="en">Your name</span></label><input id="b-name" name="name" autocomplete="name" required></div>
+      <div><label for="b-contact"><span class="de">E-Mail oder Telefonnummer</span><span class="en">Email or phone number</span></label><input id="b-contact" name="contact" autocomplete="email" inputmode="email" required></div>
+    </div>
+    <div><label for="b-msg"><span class="de">Nachricht (optional)</span><span class="en">Message (optional)</span></label><textarea id="b-msg" name="message" placeholder="Was ist das für ein Ort oder Event? Gibt es eine Steckdose?"></textarea></div>
+    <div class="hp" aria-hidden="true"><label>Website</label><input name="website" tabindex="-1" autocomplete="off"></div>
+    <div class="foot">
+      <button class="btn" type="submit" id="booksend"><span class="de">Einladung abschicken</span><span class="en">Send the invitation</span></button>
+      <span class="status" id="bookstatus"></span>
+    </div>
+    <p class="de" style="color:var(--dim);font-weight:700;font-size:15px;margin:12px 0 0">Kostet nichts – die Leute bezahlen ihre Folie bei mir, bar. Deine Angaben sehe nur ich, und ich melde mich meist am selben Tag.</p>
+    <p class="en" style="color:var(--dim);font-weight:700;font-size:15px;margin:12px 0 0">It costs nothing – people pay me for their protector, in cash. Only I see what you type, and I usually reply the same day.</p>
+  </form>
+  <div class="thanks" id="bookthanks" hidden></div>
+</div></section>
+
 <section id="ueber"><div class="board rise">
   <h2><span class="de">Wer schneidet hier?</span><span class="en">Who’s cutting?</span></h2>
   <div class="de"><p>Ich bin Peter, 11, aus Berlin. Die Schneidemaschine habe ich auf der IFA 2026 bekommen, direkt vom Stand des Herstellers. Sie schneidet aus einem Bogen Folie genau die Form für dein Display – deshalb passt sie auch bei Handys, für die kein Laden eine Folie hat.</p><p>Ich verkaufe keine Wunder. Was eine Folie kann und was nicht, steht oben – und das sage ich dir am Stand genauso.</p></div>
@@ -259,7 +305,7 @@ footer a{color:var(--key)}
   <details><summary><span class="de">Klebst du die Folie auch auf?</span><span class="en">Do you put the film on too?</span></summary><div class="a"><p class="de">Ja, am Stand. Dein Handy bleibt dabei auf dem Tisch – du legst es hin und nimmst es selbst wieder.</p><p class="en">Yes, at the stand. Your phone stays on the table – you put it down and pick it up yourself.</p></div></details>
   <details><summary><span class="de">Tablet, Switch, Smartwatch, Thermomix?</span><span class="en">Tablet, Switch, smartwatch, Thermomix?</span></summary><div class="a"><p class="de">Geht alles. Große Displays brauchen den großen Bogen (10 €). Einfach fragen.</p><p class="en">All possible. Big screens need the big sheet (€10). Just ask.</p></div></details>
   <details><summary><span class="de">Was ist, wenn die Folie nicht passt?</span><span class="en">What if the film doesn’t fit?</span></summary><div class="a"><p class="de">Falsch geschnitten? Sofort neu, kostenlos. Kleine Blasen verschwinden von selbst nach 1–2 Tagen.</p><p class="en">Cut wrong? New one right away, free. Small bubbles disappear by themselves in 1–2 days.</p></div></details>
-  <details><summary><span class="de">Kann ich vorbestellen?</span><span class="en">Can I order ahead?</span></summary><div class="a"><p class="de">Komm einfach zum nächsten Termin, dann schneide ich sie vor dir. Die Termine stehen oben.</p><p class="en">Just come to the next date and I’ll cut it in front of you. The dates are at the top.</p></div></details>
+  <details><summary><span class="de">Kann ich vorbestellen?</span><span class="en">Can I order ahead?</span></summary><div class="a"><p class="de">Komm einfach zum nächsten Termin, dann schneide ich sie vor dir. Die Termine stehen oben. Oder <a href="#buchen">lade mich</a> zu dir ein – ins Büro, in die Schule, zum Verein.</p><p class="en">Just come to the next date and I’ll cut it in front of you. The dates are above. Or <a href="#buchen">invite me</a> to your place – office, school, club.</p></div></details>
 </div></section>
 
 <section id="kontakt"><div class="board rise">
@@ -413,6 +459,44 @@ footer a{color:var(--key)}
       b.appendChild(s); setTimeout(function () { s.remove(); }, 650);
     });
   });
+  /* invite me: the form goes to the database through one checked function; nothing else can read it */
+  (function () {
+    var form = document.getElementById('book'), status = document.getElementById('bookstatus');
+    var kind = 'event';
+    function T(de, en) { return html.lang === 'en' ? en : de; }
+    function field(name) { var f = form.querySelector('.fields[data-for="' + kind + '"] [name="' + name + '"]'); return f || form.querySelector('[name="' + name + '"]'); }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      form.querySelectorAll('.bad').forEach(function (i) { i.classList.remove('bad'); });
+      var name = form.querySelector('[name=name]'), contact = form.querySelector('[name=contact]'), item = field('item');
+      var bad = null;
+      if (!item.value.trim()) { item.classList.add('bad'); bad = bad || item; }
+      if (!name.value.trim()) { name.classList.add('bad'); bad = bad || name; }
+      if (contact.value.trim().length < 3) { contact.classList.add('bad'); bad = bad || contact; }
+      if (bad) { status.className = 'status err'; status.textContent = T('Bitte fülle die roten Felder aus.', 'Please fill in the red fields.'); bad.focus(); return; }
+      var btn = document.getElementById('booksend'); btn.disabled = true; status.className = 'status'; status.textContent = T('Wird gesendet …', 'Sending …');
+      var body = { p_kind: kind, p_name: name.value.trim(), p_contact: contact.value.trim(), p_item: item.value.trim(), p_opt: field('opt').value.trim(),
+                   p_pickup: field('pickup').value.trim(), p_message: form.querySelector('[name=message]').value.trim(), p_lang: html.lang };
+      var SB = 'https://zxsgxihknyexyzzpddmg.supabase.co', KEY = 'sb_publishable_wbAdbAS-TPcojUiQMNr-jg_Zv72DF7p';
+      var send = form.querySelector('[name=website]').value   // a bot filled the hidden field: say thanks, send nothing
+        ? Promise.resolve()
+        : fetch(SB + '/rest/v1/rpc/screen_request', { method: 'POST', headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+            .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); });
+      send.then(function () {
+        var th = document.getElementById('bookthanks');
+        th.innerHTML = kind === 'protector'
+          ? T('Danke, ' + esc(body.p_name) + '! Deine Folie ist notiert.<p>Ich melde mich bei dir, meist am selben Tag, und sage dir, wann sie fertig ist.</p>',
+              'Thanks, ' + esc(body.p_name) + '! Your protector is noted.<p>I’ll get back to you, usually the same day, and tell you when it’s ready.</p>')
+          : T('Danke, ' + esc(body.p_name) + '! Die Einladung ist angekommen.<p>Ich melde mich bei dir, meist am selben Tag.</p>',
+              'Thanks, ' + esc(body.p_name) + '! Your invitation has arrived.<p>I’ll get back to you, usually the same day.</p>');
+        form.hidden = true; th.hidden = false;
+      }).catch(function () {
+        status.className = 'status err';
+        status.textContent = T('Das ging gerade nicht. Schreib mir bitte eine E-Mail: stam.peter2015@gmail.com', 'That didn’t work just now. Please email me: stam.peter2015@gmail.com');
+      }).then(function () { btn.disabled = false; });
+    });
+  })();
+
   var copy = document.getElementById('copy'), copied = document.getElementById('copied');
   copy.addEventListener('click', function () {
     var addr = document.getElementById('mail').textContent.trim();
