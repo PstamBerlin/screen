@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin – Displayschutz</title>
+<link rel="icon" href="../passgenau-mark.svg" type="image/svg+xml">
+<style>
+:root{--bg:#F9EFF4;--ink:#141120;--dim:#5E5480;--accent:#7C3AED;--accent2:#9F67FF;--on:#fff;--key:#6D28D9;--panel:#fff;--line:#E5E1E9;--soft:#FBF8FD;
+  --chipR-bg:#FBE1EC;--chipR:#9D174D;--chipL-bg:#E9E3FF;--chipL:#4C1D95;--shadow:0 6px 24px rgba(20,17,32,.08);--ease:cubic-bezier(.2,.7,.2,1);--spring:cubic-bezier(.34,1.56,.64,1)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Manrope",system-ui,sans-serif;color:var(--ink);background:linear-gradient(90deg,#F4EFFF 0%,#F9EFF4 50%,#FEEDE3 100%) fixed;line-height:1.45;font-size:16px;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 60px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.top svg{width:40px;height:33px}
+.top h1{font-size:22px;margin:0}
+.top small{display:block;color:var(--dim);font-weight:700;font-size:13px}
+.top .sp{flex:1}
+.board{background:var(--panel);border:1.5px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:22px 22px 18px;margin-bottom:18px;position:relative;overflow:hidden}
+.board::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:linear-gradient(90deg,#B9A6D3,#C7A4B7,#D9A38F)}
+h2{font-size:21px;margin:0 0 4px}
+.hint{color:var(--dim);font-weight:700;font-size:14px;margin:0 0 14px}
+label{display:block;font-weight:800;font-size:13px;color:var(--dim);margin:0 0 4px}
+input,textarea{width:100%;font:inherit;font-weight:700;color:var(--ink);background:var(--soft);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;outline:0;transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,58,237,.14)}
+textarea{min-height:64px;resize:vertical}
+.row{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--on);border:0;font:inherit;font-weight:800;padding:11px 20px;border-radius:999px;font-size:16px;cursor:pointer;transition:transform .25s var(--spring),box-shadow .25s,background .25s}
+.btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 28px rgba(124,58,237,.3);background:var(--accent2)}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:var(--chipL-bg);color:var(--chipL)}
+.btn.ghost:hover{background:#DDD3FF}
+.btn.red{background:var(--chipR-bg);color:var(--chipR)}
+.btn.red:hover{background:#F7CBDB}
+.btn[disabled]{opacity:.55;cursor:wait;transform:none}
+.btn[hidden]{display:none}
+.termin{background:var(--soft);border:1.5px solid var(--line);border-radius:16px;padding:14px 14px 6px;margin-bottom:12px;animation:pop .35s var(--spring) both}
+.termin .row:last-child{margin-bottom:6px}
+.termin .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:4px 0 6px}
+.termin .when{font-size:13px;font-weight:800;color:var(--key)}
+.price{display:grid;grid-template-columns:110px 90px 1fr 1fr;gap:10px;align-items:end;margin-bottom:10px}
+.price .n{font-weight:800;font-size:17px;padding-bottom:10px}
+@keyframes pop{0%{transform:scale(.96);opacity:0}100%{transform:none;opacity:1}}
+.msg{font-weight:800;color:var(--key);margin-left:12px;opacity:0;transition:opacity .3s}
+.msg.show{opacity:1}
+.msg.err{color:#d6453d}
+.foot2{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:8px}
+.login{max-width:420px;margin:40px auto}
+.login .btn{width:100%;justify-content:center;margin-top:6px}
+.err{color:#d6453d;font-weight:800;margin:10px 0 0;min-height:1.4em}
+.out{color:var(--dim);font-weight:700;font-size:14px}
+a{color:var(--key)}
+@media (max-width:600px){.price{grid-template-columns:1fr 1fr}.price .n{grid-column:1/-1;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <svg viewBox="0 0 208 168" aria-hidden="true"><path fill="#BFE3C6" fill-rule="evenodd" d="M12 26 H132 V152 H12 Z M44 44 h52 a11 11 0 0 1 11 11 v56 a11 11 0 0 1 -11 11 h-52 a11 11 0 0 1 -11 -11 v-56 a11 11 0 0 1 11 -11 z"/><rect x="12" y="26" width="120" height="126" fill="none" stroke="#111" stroke-width="9" stroke-linejoin="round"/><rect x="33" y="44" width="52" height="78" rx="11" fill="none" stroke="#111" stroke-width="9"/><g transform="rotate(13 152 78)"><rect x="126" y="39" width="52" height="78" rx="11" fill="#5BB8D9" stroke="#111" stroke-width="9"/></g></svg>
+    <div><h1>Admin</h1><small>Displayschutz · screen.peterstam.eu</small></div>
+    <span class="sp"></span>
+    <a class="out" href="../" target="_blank" rel="noopener">Website ansehen ↗</a>
+    <button class="btn ghost" id="logout" type="button" hidden>Abmelden</button>
+  </div>
+
+  <div class="board login" id="loginbox">
+    <h2>Anmelden</h2>
+    <p class="hint">Nur für Peter. Hier änderst du Termine, Preise und Hinweise auf der Website.</p>
+    <form id="loginform" autocomplete="on">
+      <label for="u">Benutzername</label>
+      <input id="u" name="username" autocomplete="username" spellcheck="false" required>
+      <label for="p" style="margin-top:10px">Passwort</label>
+      <input id="p" name="password" type="password" autocomplete="current-password" required>
+      <p class="err" id="loginerr"></p>
+      <button class="btn" id="loginbtn" type="submit">Anmelden</button>
+    </form>
+  </div>
+
+  <div id="editor" hidden>
+    <div class="board">
+      <h2>Termine</h2>
+      <p class="hint">Wann und wo du verkaufst. Vergangene Termine verschwinden auf der Website von selbst.</p>
+      <div id="termine"></div>
+      <button class="btn ghost" id="addtermin" type="button">+ Termin hinzufügen</button>
+    </div>
+
+    <div class="board">
+      <h2>Preise</h2>
+      <p class="hint">Der Preis in Euro, und ein kurzer Zusatz wie „nur noch 2“ (leer lassen, wenn nichts). Deutsch und Englisch.</p>
+      <div id="prices"></div>
+    </div>
+
+    <div class="board">
+      <h2>Hinweis ganz oben</h2>
+      <p class="hint">Ein Satz unter der Überschrift, zum Beispiel „Diese Woche nur am Donnerstag“. Leer lassen, wenn keiner.</p>
+      <div class="row">
+        <div><label for="bde">Deutsch</label><input id="bde" spellcheck="false"></div>
+        <div><label for="ben">English</label><input id="ben" spellcheck="false"></div>
+      </div>
+    </div>
+
+    <div class="foot2">
+      <button class="btn" id="save" type="button">Speichern</button>
+      <span class="msg" id="savemsg">Gespeichert ✓</span>
+      <span class="out" id="updated"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var SB = 'https://zxsgxihknyexyzzpddmg.supabase.co';
+  var KEY = 'sb_publishable_wbAdbAS-TPcojUiQMNr-jg_Zv72DF7p';   // the public key: it may read the site row and call the two checked functions, nothing else
+  var H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
+  var PRODUCTS = [['klar', 'Klar', 5], ['matt', 'Matt', 7], ['redlight', 'Red Light', 7], ['privacy', 'Privacy', 8], ['tablet', 'Tablet', 10]];
+  var $ = function (s) { return document.querySelector(s); };
+  var data = null, login = null;
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function rpc(fn, body) {
+    return fetch(SB + '/rest/v1/rpc/' + fn, { method: 'POST', headers: H, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error((j && j.message) || ('HTTP ' + r.status)); return j; }); });
+  }
+  function load() {
+    return fetch(SB + '/rest/v1/screen_site?select=data,updated_at&id=eq.1', { headers: H })
+      .then(function (r) { return r.json(); })
+      .then(function (rows) { var row = rows && rows[0]; data = (row && row.data) || {}; if (row && row.updated_at) $('#updated').textContent = 'Zuletzt gespeichert: ' + new Date(row.updated_at).toLocaleString('de-DE'); });
+  }
+
+  /* ---- the editor ---- */
+  function terminRow(t, i) {
+    var d = document.createElement('div'); d.className = 'termin';
+    d.innerHTML = '<div class="row">' +
+      '<div><label>Datum</label><input type="date" data-k="date" value="' + esc(t.date) + '"></div>' +
+      '<div><label>Uhrzeit</label><input data-k="time" placeholder="11–16 Uhr" value="' + esc(t.time) + '"></div>' +
+      '<div><label>Ort</label><input data-k="place" placeholder="Markt am Rathaus" value="' + esc(t.place) + '"></div></div>' +
+      '<div class="row"><div><label>Adresse</label><input data-k="address" placeholder="Straße, Berlin" value="' + esc(t.address) + '"></div>' +
+      '<div><label>Notiz (optional)</label><input data-k="note" placeholder="Steckdose vor Ort" value="' + esc(t.note) + '"></div></div>' +
+      '<div class="foot"><span class="when"></span><button class="btn red" type="button" data-del="' + i + '">Löschen</button></div>';
+    var when = d.querySelector('.when'), di = d.querySelector('[data-k=date]');
+    function paint() { var v = di.value; when.textContent = v ? new Date(v + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'Kein Datum'; }
+    di.addEventListener('input', paint); paint();
+    d.querySelector('[data-del]').addEventListener('click', function () { readForm(); data.termine.splice(i, 1); renderTermine(); });
+    return d;
+  }
+  function renderTermine() {
+    var box = $('#termine'); box.innerHTML = '';
+    (data.termine || []).forEach(function (t, i) { box.appendChild(terminRow(t, i)); });
+  }
+  function renderPrices() {
+    var box = $('#prices'); box.innerHTML = '';
+    var p = data.prices || {}, n = data.notes || {};
+    PRODUCTS.forEach(function (pr) {
+      var k = pr[0], d = document.createElement('div'); d.className = 'price'; d.dataset.k = k;
+      d.innerHTML = '<div class="n">' + pr[1] + '</div>' +
+        '<div><label>Euro</label><input type="number" min="0" step="1" data-p value="' + esc(p[k] != null ? p[k] : pr[2]) + '"></div>' +
+        '<div><label>Zusatz (DE)</label><input data-nde placeholder="nur noch 2" value="' + esc(n[k + '_de']) + '"></div>' +
+        '<div><label>Zusatz (EN)</label><input data-nen placeholder="only 2 left" value="' + esc(n[k + '_en']) + '"></div>';
+      box.appendChild(d);
+    });
+    $('#bde').value = (data.banner && data.banner.de) || '';
+    $('#ben').value = (data.banner && data.banner.en) || '';
+  }
+  function readForm() {
+    data.termine = [].map.call(document.querySelectorAll('.termin'), function (d) {
+      var t = {}; d.querySelectorAll('[data-k]').forEach(function (i) { t[i.dataset.k] = i.value.trim(); }); return t;
+    });
+    data.prices = {}; data.notes = {};
+    document.querySelectorAll('.price').forEach(function (d) {
+      var k = d.dataset.k; var v = Number(d.querySelector('[data-p]').value);
+      data.prices[k] = isFinite(v) ? v : 0;
+      data.notes[k + '_de'] = d.querySelector('[data-nde]').value.trim();
+      data.notes[k + '_en'] = d.querySelector('[data-nen]').value.trim();
+    });
+    data.banner = { de: $('#bde').value.trim(), en: $('#ben').value.trim() };
+  }
+  function showEditor() {
+    if (!data.termine) data.termine = [];
+    $('#loginbox').hidden = true; $('#editor').hidden = false; $('#logout').hidden = false;
+    renderTermine(); renderPrices();
+  }
+  $('#addtermin').addEventListener('click', function () {
+    readForm(); data.termine.push({ date: '', time: '', place: '', address: '', note: '' }); renderTermine();
+    var last = document.querySelector('.termin:last-child input'); if (last) last.focus();
+  });
+  var msg = $('#savemsg');
+  function say(text, err) { msg.textContent = text; msg.classList.toggle('err', !!err); msg.classList.add('show'); clearTimeout(say.t); say.t = setTimeout(function () { msg.classList.remove('show'); }, 2600); }
+  $('#save').addEventListener('click', function () {
+    readForm();
+    var bad = data.termine.filter(function (t) { return !/^\d{4}-\d{2}-\d{2}$/.test(t.date) || !t.place; });
+    if (bad.length) { say('Jeder Termin braucht ein Datum und einen Ort.', true); return; }
+    data.termine.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var b = $('#save'); b.disabled = true;
+    rpc('screen_admin_save', { u: login.u, p: login.p, d: data })
+      .then(function () { say('Gespeichert ✓'); $('#updated').textContent = 'Zuletzt gespeichert: ' + new Date().toLocaleString('de-DE'); renderTermine(); })
+      .catch(function (e) { say(/wrong login/.test(e.message) ? 'Login abgelaufen, bitte neu anmelden.' : 'Speichern ging nicht: ' + e.message, true); })
+      .then(function () { b.disabled = false; });
+  });
+
+  /* ---- login: the name and password are checked by the database, and kept for this tab only ---- */
+  $('#loginform').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var u = $('#u').value.trim(), p = $('#p').value, btn = $('#loginbtn'), err = $('#loginerr');
+    err.textContent = ''; btn.disabled = true;
+    rpc('screen_admin_check', { u: u, p: p }).then(function (ok) {
+      if (!ok) { err.textContent = 'Name oder Passwort stimmt nicht.'; return; }
+      login = { u: u, p: p };
+      try { sessionStorage.setItem('screen.admin', JSON.stringify(login)); } catch (x) {}
+      return load().then(showEditor);
+    }).catch(function (x) { err.textContent = 'Keine Verbindung: ' + x.message; }).then(function () { btn.disabled = false; });
+  });
+  $('#logout').addEventListener('click', function () {
+    login = null; try { sessionStorage.removeItem('screen.admin'); } catch (x) {}
+    $('#editor').hidden = true; $('#logout').hidden = true; $('#loginbox').hidden = false; $('#p').value = '';
+  });
+  try { var kept = JSON.parse(sessionStorage.getItem('screen.admin') || 'null'); } catch (x) { kept = null; }
+  if (kept && kept.u && kept.p) {
+    rpc('screen_admin_check', { u: kept.u, p: kept.p }).then(function (ok) { if (ok) { login = kept; return load().then(showEditor); } }).catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>

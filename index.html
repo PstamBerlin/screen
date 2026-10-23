@@ -67,6 +67,7 @@ a.chip{text-decoration:none;transition:transform .25s var(--spring),box-shadow .
 a.chip:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 8px 20px rgba(124,58,237,.18)}
 .chip.v{background:#DCF5E3;color:#14532D}.chip.r{background:var(--chipR-bg);color:var(--chipR)}.chip.p{background:var(--chipP-bg);color:var(--chipP)}
 /* entrance animations: things rise in as they appear */
+.notice{margin:16px auto 0;max-width:640px;background:var(--warn);border:1.5px solid #D9A38F;border-radius:16px;padding:10px 16px;font-weight:800;animation:pop .5s var(--spring) both}
 .rise{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .rise.in{opacity:1;transform:none}
 .hero .rise{transition-delay:var(--d,0s)}
@@ -177,6 +178,7 @@ footer a{color:var(--key)}
     <a class="chip p de" href="#preise">Im Laden ab 20 € – bei mir ab 3 €</a><a class="chip p en" href="#preise">In shops from €20 – here from €3</a>
     <a class="chip de" href="#termine">Fertig, während du wartest</a><a class="chip en" href="#termine">Done while you wait</a>
   </div>
+  <p class="notice" id="notice" hidden><span class="de"></span><span class="en"></span></p>
 </div>
 
 <section id="termine"><div class="board rise">
@@ -189,11 +191,11 @@ footer a{color:var(--key)}
 <section id="preise"><div class="board rise">
   <h2><span class="de">Preise</span><span class="en">Prices</span></h2>
   <div class="prices stagger">
-    <div class="price"><div class="amt">5 €</div><div><div class="n de">Klar</div><div class="n en">Clear</div><div class="d">9H · EPU</div></div></div>
-    <div class="price"><div class="amt">7 €</div><div><div class="n de">Matt</div><div class="n en">Matte</div><div class="d de">kein Glanz, keine Fingerabdrücke</div><div class="d en">no glare, no fingerprints</div></div></div>
-    <div class="price"><div class="amt">7 €</div><div><div class="n">Red Light</div><div class="d de">wärmerer Ton</div><div class="d en">warmer tone</div><span class="low de">nur noch 2</span><span class="low en">only 2 left</span></div></div>
-    <div class="price"><div class="amt">8 €</div><div><div class="n">Privacy</div><div class="d de">seitlich schwarz</div><div class="d en">black from the side</div></div></div>
-    <div class="price"><div class="amt">10 €</div><div><div class="n">Tablet</div><div class="d de">große Folie</div><div class="d en">big sheet</div></div></div>
+    <div class="price" data-k="klar"><div class="amt">5 €</div><div><div class="n de">Klar</div><div class="n en">Clear</div><div class="d">9H · EPU</div></div></div>
+    <div class="price" data-k="matt"><div class="amt">7 €</div><div><div class="n de">Matt</div><div class="n en">Matte</div><div class="d de">kein Glanz, keine Fingerabdrücke</div><div class="d en">no glare, no fingerprints</div></div></div>
+    <div class="price" data-k="redlight"><div class="amt">7 €</div><div><div class="n">Red Light</div><div class="d de">wärmerer Ton</div><div class="d en">warmer tone</div><span class="low de">nur noch 2</span><span class="low en">only 2 left</span></div></div>
+    <div class="price" data-k="privacy"><div class="amt">8 €</div><div><div class="n">Privacy</div><div class="d de">seitlich schwarz</div><div class="d en">black from the side</div></div></div>
+    <div class="price" data-k="tablet"><div class="amt">10 €</div><div><div class="n">Tablet</div><div class="d de">große Folie</div><div class="d en">big sheet</div></div></div>
   </div>
   <div class="extras">
     <span class="extra de">−2 € · dünnere Folie (TPU)</span><span class="extra en">−€2 · thinner film (TPU)</span>
@@ -279,6 +281,34 @@ footer a{color:var(--key)}
 
 <script src="termine.js"></script>
 <script>
+// Live content from the admin page (screen.peterstam.eu/admin): dates, prices, notes, a notice.
+// The page works without it; this only replaces what Peter changed there.
+(function () {
+  var SB = 'https://zxsgxihknyexyzzpddmg.supabase.co', KEY = 'sb_publishable_wbAdbAS-TPcojUiQMNr-jg_Zv72DF7p';
+  fetch(SB + '/rest/v1/screen_site?select=data&id=eq.1', { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } })
+    .then(function (r) { return r.ok ? r.json() : []; })
+    .then(function (rows) {
+      var d = rows && rows[0] && rows[0].data; if (!d) return;
+      if (Array.isArray(d.termine)) { window.TERMINE = d.termine; if (window.renderDates) window.renderDates(); }
+      if (d.prices) Object.keys(d.prices).forEach(function (k) {
+        var card = document.querySelector('.price[data-k="' + k + '"]'); if (!card) return;
+        var v = Number(d.prices[k]); if (isFinite(v) && v > 0) card.querySelector('.amt').textContent = v + ' €';
+        card.querySelectorAll('.low').forEach(function (e) { e.remove(); });
+        var n = d.notes || {};
+        if (n[k + '_de'] || n[k + '_en']) {
+          var de = document.createElement('span'); de.className = 'low de'; de.textContent = n[k + '_de'] || n[k + '_en'];
+          var en = document.createElement('span'); en.className = 'low en'; en.textContent = n[k + '_en'] || n[k + '_de'];
+          card.lastElementChild.append(de, en);
+        }
+      });
+      if (d.notes && ('redlight_de' in d.notes)) document.querySelectorAll('#folien .low').forEach(function (e) { e.textContent = (e.closest('.de') ? d.notes.redlight_de : d.notes.redlight_en) || ''; if (!e.textContent) e.remove(); });
+      if (d.banner && (d.banner.de || d.banner.en)) {
+        var nt = document.getElementById('notice'); nt.querySelector('.de').textContent = d.banner.de || d.banner.en; nt.querySelector('.en').textContent = d.banner.en || d.banner.de; nt.hidden = false;
+      }
+    }).catch(function () {});
+})();
+</script>
+<script>
 (function () {
   var html = document.documentElement;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -318,6 +348,7 @@ footer a{color:var(--key)}
     }).join('');
   }
   setLang(saved);
+  window.renderDates = renderDates;
 
   /* things rise in as they scroll into view */
   var toReveal = document.querySelectorAll('.rise, .stagger');
