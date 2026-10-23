@@ -49,6 +49,10 @@ textarea{min-height:64px;resize:vertical}
 .foot2{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:8px}
 .login{max-width:420px;margin:40px auto}
 .login .btn{width:100%;justify-content:center;margin-top:6px}
+.pw{position:relative}.pw input{padding-right:46px}
+.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:10px;background:transparent;color:var(--dim);cursor:pointer;display:grid;place-items:center}
+.pw button:hover{background:var(--chipL-bg);color:var(--chipL)}.pw button.on{color:var(--accent)}
+.pw svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .err{color:#d6453d;font-weight:800;margin:10px 0 0;min-height:1.4em}
 .out{color:var(--dim);font-weight:700;font-size:14px}
 a{color:var(--key)}
@@ -72,7 +76,8 @@ a{color:var(--key)}
       <label for="u">Benutzername</label>
       <input id="u" name="username" autocomplete="username" spellcheck="false" required>
       <label for="p" style="margin-top:10px">Passwort</label>
-      <input id="p" name="password" type="password" autocomplete="current-password" required>
+      <div class="pw"><input id="p" name="password" type="password" autocomplete="current-password" required>
+        <button type="button" id="showpw" aria-label="Passwort anzeigen" title="Passwort anzeigen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3.500-6 9-6 9 6 9 6-3.500 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.600"/></svg></button></div>
       <p class="err" id="loginerr"></p>
       <button class="btn" id="loginbtn" type="submit">Anmelden</button>
     </form>
@@ -213,6 +218,10 @@ a{color:var(--key)}
       try { sessionStorage.setItem('screen.admin', JSON.stringify(login)); } catch (x) {}
       return load().then(showEditor);
     }).catch(function (x) { err.textContent = 'Keine Verbindung: ' + x.message; }).then(function () { btn.disabled = false; });
+  });
+  $('#showpw').addEventListener('click', function () {
+    var p = $('#p'), on = p.type === 'password'; p.type = on ? 'text' : 'password'; this.classList.toggle('on', on);
+    this.setAttribute('aria-label', on ? 'Passwort verbergen' : 'Passwort anzeigen'); p.focus();
   });
   $('#logout').addEventListener('click', function () {
     login = null; try { sessionStorage.removeItem('screen.admin'); } catch (x) {}
