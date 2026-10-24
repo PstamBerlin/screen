@@ -68,6 +68,8 @@ a.chip:hover{transform:translateY(-2px) scale(1.04);box-shadow:0 8px 20px rgba(1
 .chip.v{background:#DCF5E3;color:#14532D}.chip.r{background:var(--chipR-bg);color:var(--chipR)}.chip.p{background:var(--chipP-bg);color:var(--chipP)}
 /* entrance animations: things rise in as they appear */
 .notice{margin:16px auto 0;max-width:640px;background:var(--warn);border:1.5px solid #D9A38F;border-radius:16px;padding:10px 16px;font-weight:800;animation:pop .5s var(--spring) both}
+.schoolnote{margin:18px auto 0;max-width:640px;background:var(--chipL-bg);color:var(--chipL);border-radius:18px;padding:11px 18px;font-weight:700;font-size:16px;line-height:1.4}
+.schoolnote b{color:var(--chipL);font-weight:800}
 .rise{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .rise.in{opacity:1;transform:none}
 .hero .rise{transition-delay:var(--d,0s)}
@@ -196,6 +198,7 @@ footer a{color:var(--key)}
     <a class="chip p de" href="#preise">Im Laden ab 20 € – bei mir ab 3 €</a><a class="chip p en" href="#preise">In shops from €20 – here from €3</a>
     <a class="chip de" href="#termine">Fertig, während du wartest</a><a class="chip en" href="#termine">Done while you wait</a>
   </div>
+  <p class="schoolnote rise" style="--d:.4s"><span class="de">🎒 Ich gehe zur Schule – deshalb kann ich normalerweise nur <b>nachmittags</b> kommen, und zwar <b>montags, donnerstags, samstags und sonntags</b>. Ausnahmen stehen bei den Terminen.</span><span class="en">🎒 I’m at school, so I can usually only come in the <b>afternoon</b>, on <b>Monday, Thursday, Saturday and Sunday</b>. Exceptions are listed under the dates.</span></p>
   <p class="notice" id="notice" hidden><span class="de"></span><span class="en"></span></p>
 </div>
 
