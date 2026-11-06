@@ -25,8 +25,8 @@ body{font-family:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold","Manrope",s
 h2{font-size:21px;margin:0 0 4px}
 .hint{color:var(--dim);font-weight:700;font-size:14px;margin:0 0 14px}
 label{display:block;font-weight:800;font-size:13px;color:var(--dim);margin:0 0 4px}
-input,textarea{width:100%;font:inherit;font-weight:700;color:var(--ink);background:var(--soft);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;outline:0;transition:border-color .2s,box-shadow .2s}
-input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,58,237,.14)}
+input,select,textarea{width:100%;font:inherit;font-weight:700;color:var(--ink);background:var(--soft);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;outline:0;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(124,58,237,.14)}
 textarea{min-height:64px;resize:vertical}
 .row{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin-bottom:10px}
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--on);border:0;font:inherit;font-weight:800;padding:11px 20px;border-radius:999px;font-size:16px;cursor:pointer;transition:transform .25s var(--spring),box-shadow .25s,background .25s}
@@ -208,15 +208,24 @@ a{color:var(--key)}
   function terminRow(t, i) {
     var d = document.createElement('div'); d.className = 'termin';
     d.innerHTML = '<div class="row">' +
-      '<div><label>Datum</label><input type="date" data-k="date" value="' + esc(t.date) + '"></div>' +
+      '<div><label>Datum (bei Wiederholung: der erste Termin)</label><input type="date" data-k="date" value="' + esc(t.date) + '"></div>' +
       '<div><label>Uhrzeit</label><input data-k="time" placeholder="11–16 Uhr" value="' + esc(t.time) + '"></div>' +
       '<div><label>Ort</label><input data-k="place" placeholder="Markt am Rathaus" value="' + esc(t.place) + '"></div></div>' +
       '<div class="row"><div><label>Adresse</label><input data-k="address" placeholder="Straße, Berlin" value="' + esc(t.address) + '"></div>' +
       '<div><label>Notiz (optional)</label><input data-k="note" placeholder="Steckdose vor Ort" value="' + esc(t.note) + '"></div></div>' +
+      '<div class="row"><div><label>Wiederholung</label><select data-k="repeat"><option value="">Einmalig</option><option value="weekly"' + (t.repeat === 'weekly' ? ' selected' : '') + '>Jede Woche</option><option value="biweekly"' + (t.repeat === 'biweekly' ? ' selected' : '') + '>Alle 2 Wochen</option></select></div>' +
+      '<div><label>Bis (optional)</label><input type="date" data-k="until" value="' + esc(t.until) + '"></div>' +
+      '<div><label>Fällt aus am (optional, Daten mit Komma)</label><input data-k="skip" placeholder="2026-12-24, 2026-12-31" value="' + esc(t.skip) + '"></div></div>' +
       '<div class="foot"><span class="when"></span><button class="btn red" type="button" data-del="' + i + '">Löschen</button></div>';
-    var when = d.querySelector('.when'), di = d.querySelector('[data-k=date]');
-    function paint() { var v = di.value; when.textContent = v ? new Date(v + 'T12:00:00').toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : 'Kein Datum'; }
-    di.addEventListener('input', paint); paint();
+    var when = d.querySelector('.when'), di = d.querySelector('[data-k=date]'), ri = d.querySelector('[data-k=repeat]');
+    function paint() {
+      var v = di.value; if (!v) { when.textContent = 'Kein Datum'; return; }
+      var day = new Date(v + 'T12:00:00'), wd = day.toLocaleDateString('de-DE', { weekday: 'long' });
+      when.textContent = ri.value === 'weekly' ? 'Jeden ' + wd + ', ab ' + day.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })
+        : ri.value === 'biweekly' ? 'Alle 2 Wochen am ' + wd + ', ab ' + day.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' })
+        : day.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    }
+    di.addEventListener('input', paint); ri.addEventListener('change', paint); paint();
     d.querySelector('[data-del]').addEventListener('click', function () { readForm(); data.termine.splice(i, 1); renderTermine(); });
     return d;
   }
@@ -259,7 +268,7 @@ a{color:var(--key)}
     renderTermine(); renderPrices(); loadRequests();
   }
   $('#addtermin').addEventListener('click', function () {
-    readForm(); data.termine.push({ date: '', time: '', place: '', address: '', note: '' }); renderTermine();
+    readForm(); data.termine.push({ date: '', time: '', place: '', address: '', note: '', repeat: '', until: '', skip: '' }); renderTermine();
     var last = document.querySelector('.termin:last-child input'); if (last) last.focus();
   });
   var msg = $('#savemsg');
@@ -272,8 +281,11 @@ a{color:var(--key)}
       var date = d.querySelector('[data-k=date]'), place = d.querySelector('[data-k=place]');
       if (!/^\d{4}-\d{2}-\d{2}$/.test(date.value)) { date.classList.add('bad'); firstBad = firstBad || date; }
       if (!place.value.trim()) { place.classList.add('bad'); firstBad = firstBad || place; }
+      var until = d.querySelector('[data-k=until]'), skip = d.querySelector('[data-k=skip]');
+      if (until.value && (!/^\d{4}-\d{2}-\d{2}$/.test(until.value) || until.value < date.value)) { until.classList.add('bad'); firstBad = firstBad || until; }
+      if (skip.value.trim() && !skip.value.trim().split(/[\s,;]+/).every(function (x) { return /^\d{4}-\d{2}-\d{2}$/.test(x); })) { skip.classList.add('bad'); firstBad = firstBad || skip; }
     });
-    if (firstBad) { say('Ein Termin hat noch kein Datum oder keinen Ort (rot markiert). Fülle es aus, oder lösche den Termin.', true, true); firstBad.focus(); firstBad.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    if (firstBad) { say('Bei einem Termin fehlt etwas oder es ist falsch (rot markiert): Datum, Ort, "Bis" oder "Fällt aus am" (Format JJJJ-MM-TT). Fülle es aus, oder lösche den Termin.', true, true); firstBad.focus(); firstBad.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     data.termine.sort(function (a, b) { return a.date < b.date ? -1 : 1; });
     var b = $('#save'); b.disabled = true;
     rpc('screen_admin_save', { u: login.u, p: login.p, d: data })

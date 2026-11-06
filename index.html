@@ -382,21 +382,41 @@ footer a{color:var(--key)}
               en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] };
   var DAY = { de: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'], en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] };
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var DAYFULL = { de: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'], en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] };
+  function ymd(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  // one entry -> its next dates. A repeating entry (every week / every 2 weeks, from its first date, until an optional end date, minus the
+  // days listed under "skip") gives its next two dates, so one weekly market does not push all the other dates off the list.
+  function occurrences(t, today) {
+    var out = [], start = new Date(t.date + 'T12:00:00');
+    if (isNaN(start)) return out;
+    if (!t.repeat) { if (start >= today) out.push({ t: t, d: start }); return out; }
+    var step = t.repeat === 'biweekly' ? 14 : 7, until = /^\d{4}-\d{2}-\d{2}$/.test(t.until || '') ? new Date(t.until + 'T12:00:00') : null, skip = String(t.skip || '').split(/[\s,;]+/).filter(Boolean), d = new Date(start);
+    if (d < today) { d.setDate(d.getDate() + Math.floor((today - d) / 86400000 / step) * step); while (d < today) d.setDate(d.getDate() + step); }
+    for (var n = 0; n < 80 && out.length < 2; n++) {
+      if (until && d > until) break;
+      if (skip.indexOf(ymd(d)) < 0) out.push({ t: t, d: new Date(d), rep: true });
+      d.setDate(d.getDate() + step);
+    }
+    return out;
+  }
   function renderDates() {
     var l = html.lang, box = document.getElementById('nextlist');
     var today = new Date(); today.setHours(0, 0, 0, 0);
-    var list = (window.TERMINE || []).filter(function (t) { return new Date(t.date + 'T12:00:00') >= today; })
-      .sort(function (a, b) { return a.date < b.date ? -1 : 1; }).slice(0, 4);
+    var list = [];
+    (window.TERMINE || []).forEach(function (t) { list = list.concat(occurrences(t, today)); });
+    list.sort(function (a, b) { return a.d - b.d; }); list = list.slice(0, 4);
     if (!list.length) {
       box.innerHTML = '<div class="soon">' + (l === 'de'
         ? 'Der nächste Termin steht noch nicht fest. Schau bald wieder vorbei – sobald er feststeht, steht er hier.'
         : 'The next date isn’t fixed yet. Check back soon – as soon as it is, it’ll be here.') + '</div>';
       return;
     }
-    box.innerHTML = list.map(function (t, i) {
-      var d = new Date(t.date + 'T12:00:00');
+    box.innerHTML = list.map(function (o, i) {
+      var t = o.t, d = o.d, wd = DAYFULL[l][d.getDay()];
+      var every = !o.rep ? '' : (t.repeat === 'biweekly' ? (l === 'de' ? 'alle 2 Wochen (' + DAY[l][d.getDay()] + ')' : 'every 2 weeks (' + DAY[l][d.getDay()] + ')') : (l === 'de' ? 'jeden ' + wd : 'every ' + wd));
       return '<div class="date" style="animation-delay:' + (i * .1) + 's"><div class="day"><span>' + DAY[l][d.getDay()] + '</span><b>' + d.getDate() + '</b><span>' + MON[l][d.getMonth()] + '</span></div>' +
         '<div><div class="where">' + esc(t.place) + '</div><div class="meta">' + esc([t.time, t.address].filter(Boolean).join(' · ')) + '</div>' +
+        (every ? '<div class="meta"><b>' + esc(every) + '</b></div>' : '') +
         (t.note ? '<div class="meta">' + esc(t.note) + '</div>' : '') + '</div></div>';
     }).join('');
   }
